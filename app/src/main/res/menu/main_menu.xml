@@ -14,7 +14,7 @@
         android:title="More Apps"
         app:showAsAction="never" />
     <item
-        android:id="@+id/recycle_view"
+        android:id="@+id/reload"
         android:orderInCategory="100"
         android:icon="@mipmap/recycle_icon"
         android:title="Refresh"

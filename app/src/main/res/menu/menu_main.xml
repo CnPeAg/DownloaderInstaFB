@@ -25,10 +25,9 @@
         android:title="Share"
         app:showAsAction="always"/>
     <item
-        android:id="@+id/download"
+        android:id="@+id/logout"
         android:orderInCategory="100"
-        android:icon="@mipmap/download_icon"
-        android:title="Download Video"
-        app:showAsAction="always"/>
+        android:title="Log out"
+        app:showAsAction="never" />
 
 </menu>

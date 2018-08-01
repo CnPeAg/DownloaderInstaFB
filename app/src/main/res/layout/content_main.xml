@@ -11,6 +11,7 @@
     <WebView
         android:id="@+id/facebook_page"
         android:layout_width="match_parent"
+        android:layout_above="@+id/banner2"
         android:layout_height="match_parent">
 
 
@@ -22,5 +23,13 @@
             android:layout_x="140dp"
             android:layout_y="217dp" />
     </WebView>
+
+    <RelativeLayout
+        android:id="@+id/banner2"
+        android:layout_width="match_parent"
+        android:layout_height="50dp"
+        android:layout_alignParentBottom="true">
+
+    </RelativeLayout>
 
 </RelativeLayout>
