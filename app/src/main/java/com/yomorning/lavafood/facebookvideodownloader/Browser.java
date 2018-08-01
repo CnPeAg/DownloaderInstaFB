@@ -62,8 +62,6 @@ public class Browser extends AppCompatActivity {
 
         facebookPage = findViewById(R.id.facebook_page);
         progressBar = findViewById(R.id.progressBar);
-//        download=(Button)findViewById(R.id.download);
-//        download.setOnClickListener(this);
         downloadManager = (DownloadManager) getSystemService(DOWNLOAD_SERVICE);
         showFacebookOnBrowser();
 
