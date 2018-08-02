@@ -1,4 +1,4 @@
-package com.yomorning.lavafood.facebookvideodownloader;
+package com.mngh.tuanvn.facebookvideodownloader;
 
 import org.junit.Test;
 

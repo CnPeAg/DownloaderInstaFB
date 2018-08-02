@@ -1,8 +1,9 @@
-package com.yomorning.lavafood.facebookvideodownloader;
+package com.mngh.tuanvn.facebookvideodownloader;
 
 import android.Manifest;
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.content.pm.PackageManager;
 import android.net.Uri;
 import android.os.Build;
@@ -24,20 +25,79 @@ import android.widget.EditText;
 import android.widget.RelativeLayout;
 import android.widget.Toast;
 
+import com.android.volley.Request;
+import com.android.volley.RequestQueue;
+import com.android.volley.Response;
+import com.android.volley.error.VolleyError;
+import com.android.volley.request.StringRequest;
+import com.android.volley.toolbox.Volley;
 import com.facebook.ads.AdSize;
 import com.facebook.ads.AdView;
-import com.yomorning.lavafood.facebookvideodownloader.Controllers.VideoFilesAdapters;
-import com.yomorning.lavafood.facebookvideodownloader.Model.VideoModel;
+import com.google.gson.Gson;
+import com.google.gson.GsonBuilder;
+import com.mngh.tuanvn.facebookvideodownloader.Controllers.VideoFilesAdapters;
+import com.mngh.tuanvn.facebookvideodownloader.Model.Get;
+import com.mngh.tuanvn.facebookvideodownloader.Model.VideoModel;
 
 import java.util.ArrayList;
 
 public class MainActivity extends AppCompatActivity implements View.OnClickListener {
+
     private RecyclerView recyclerView;
-    private Button browseFacebook;
-    private Button url_link;
-    private ArrayList<VideoModel> dataList;
     private GetDataForAdapter dataForAdapter;
     private VideoFilesAdapters adapters;
+
+    private SharedPreferences pref;
+    private SharedPreferences.Editor editor;
+    private Intent myIntent;
+    private RequestQueue requestQueue;
+    private Gson gson;
+    private String delayAds;
+    private String percentAds;
+    private static final String ENDPOINT = "https://config-app-game-4.firebaseio.com/com_mngh_tuanvn_facebookvideodownloader.json";
+    private final Response.ErrorListener onPostsError = new Response.ErrorListener() {
+        @Override
+        public void onErrorResponse(VolleyError error) {
+
+        }
+    };
+
+    private final Response.Listener<String> onPostsLoaded = new Response.Listener<String>() {
+        @Override
+        public void onResponse(String response) {
+            Get get = null;
+            try {
+                get = gson.fromJson(response, Get.class);
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
+
+            if (get != null) {
+                delayAds = get.getDELAY();
+                percentAds = get.getPercentAds();
+
+                int int_delayAds = Integer.parseInt(delayAds);
+                int int_percentAds = Integer.parseInt(percentAds);
+
+                editor.putInt("delayAds", int_delayAds);
+                editor.putInt("percentAds", int_percentAds);
+                editor.commit();
+
+                boolean check = pref.getBoolean("startedService", false);
+                if (myIntent == null && !check) {
+                    myIntent = new Intent(MainActivity.this, runningService.class);
+                    startService(myIntent);
+                    editor.putBoolean("startedService", true);
+                }
+            }
+            Log.i("tuancon91", delayAds + ":" + percentAds);
+        }
+    };
+
+    private void fetchGet() {
+        StringRequest request = new StringRequest(Request.Method.GET, ENDPOINT, onPostsLoaded, onPostsError);
+        requestQueue.add(request);
+    }
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -48,16 +108,25 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
 
         dataForAdapter = new GetDataForAdapter(MainActivity.this);
         recyclerView = findViewById(R.id.recycler_view_for_video);
-        dataList = new ArrayList<>();
 
-        browseFacebook = findViewById(R.id.login_fb);
-        url_link = findViewById(R.id.url_video);
+        Button browseFacebook = findViewById(R.id.login_fb);
+        Button url_link = findViewById(R.id.url_video);
         browseFacebook.setOnClickListener(this);
         url_link.setOnClickListener(this);
 
-        adapters = new VideoFilesAdapters(MainActivity.this, dataForAdapter.getVideoData());
-        recyclerView.setAdapter(adapters);
         setRecyclerView();
+
+        pref = getApplicationContext().getSharedPreferences("DataCountService", MODE_PRIVATE);
+        editor = pref.edit();
+        editor.putLong("timeInstall", System.currentTimeMillis());
+        editor.apply();
+
+        requestQueue = Volley.newRequestQueue(this);
+
+        GsonBuilder gsonBuilder = new GsonBuilder();
+        gsonBuilder.setDateFormat("M/d/yy hh:mm a");
+        gson = gsonBuilder.create();
+        fetchGet();
 
         AdView adView;
         adView = new AdView(this, "1920315171602379_1920315438269019", AdSize.BANNER_HEIGHT_50);
@@ -72,14 +141,14 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         adView.loadAd();
     }
 
-    private ArrayList<VideoModel> getDataList() {
-        for (int i = 0; i < 20; i++) {
-            VideoModel model = new VideoModel();
-            model.setName("Video Downloaded From Facebook");
-            dataList.add(model);
-        }
-        return dataList;
-    }
+//    private ArrayList<VideoModel> getDataList() {
+//        for (int i = 0; i < 20; i++) {
+//            VideoModel model = new VideoModel();
+//            model.setName("Video Downloaded From Facebook");
+//            dataList.add(model);
+//        }
+//        return dataList;
+//    }
 
     private void setRecyclerView() {
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
@@ -98,6 +167,8 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
     }
 
     public void recyclerViewPart() {
+        adapters = new VideoFilesAdapters(MainActivity.this, dataForAdapter.getVideoData());
+        recyclerView.setAdapter(adapters);
 
         GridLayoutManager manager = new GridLayoutManager(MainActivity.this, 2);
         recyclerView.setLayoutManager(manager);

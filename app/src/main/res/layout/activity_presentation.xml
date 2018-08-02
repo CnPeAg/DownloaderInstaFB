@@ -4,7 +4,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="vertical"
-    tools:context="com.yomorning.lavafood.facebookvideodownloader.PresentationActivity"
+    tools:context="com.mngh.tuanvn.facebookvideodownloader.PresentationActivity"
     android:background="@color/colorTextPrimary">
 
     <TextView

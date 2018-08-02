@@ -1,4 +1,4 @@
-package com.yomorning.lavafood.facebookvideodownloader;
+package com.mngh.tuanvn.facebookvideodownloader;
 
 import android.content.ContentResolver;
 import android.content.Context;
@@ -8,7 +8,7 @@ import android.media.ThumbnailUtils;
 import android.provider.MediaStore;
 import android.util.Log;
 
-import com.yomorning.lavafood.facebookvideodownloader.Model.VideoModel;
+import com.mngh.tuanvn.facebookvideodownloader.Model.VideoModel;
 
 import java.util.ArrayList;
 

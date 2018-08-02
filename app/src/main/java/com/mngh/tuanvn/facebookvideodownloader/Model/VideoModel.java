@@ -1,8 +1,8 @@
-package com.yomorning.lavafood.facebookvideodownloader.Model;
+package com.mngh.tuanvn.facebookvideodownloader.Model;
 
 import android.graphics.Bitmap;
 
-import com.yomorning.lavafood.facebookvideodownloader.R;
+import com.mngh.tuanvn.facebookvideodownloader.R;
 
 /**
  * Created by KAMAL OLI on 12/08/2017.
