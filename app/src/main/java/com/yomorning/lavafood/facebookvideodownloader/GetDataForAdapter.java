@@ -33,7 +33,7 @@ public class GetDataForAdapter {
         contentResolver = context.getContentResolver();
         String[] projection = {MediaStore.Video.Media._ID, MediaStore.Video.Media.SIZE, MediaStore.Video.Media.DATA,
                 MediaStore.Video.Media.DISPLAY_NAME};
-        String[] selectionArgs = new String[]{"%FbVideoDownload%"};
+        String[] selectionArgs = new String[]{"%FBVideoDownloader%"};
         cursor = contentResolver.query(MediaStore.Video.Media.EXTERNAL_CONTENT_URI,
                 projection, MediaStore.Video.Media.DATA + " like?", selectionArgs, MediaStore.Video.Media.DATE_TAKEN);
         if (cursor != null) {

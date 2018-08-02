@@ -32,11 +32,12 @@ import com.yomorning.lavafood.facebookvideodownloader.Model.VideoModel;
 import java.util.ArrayList;
 
 public class MainActivity extends AppCompatActivity implements View.OnClickListener {
-    RecyclerView recyclerView;
-    Button browseFacebook;
-    Button url_link;
-    ArrayList<VideoModel> dataList;
-    GetDataForAdapter dataForAdapter;
+    private RecyclerView recyclerView;
+    private Button browseFacebook;
+    private Button url_link;
+    private ArrayList<VideoModel> dataList;
+    private GetDataForAdapter dataForAdapter;
+    private VideoFilesAdapters adapters;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -54,6 +55,8 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         browseFacebook.setOnClickListener(this);
         url_link.setOnClickListener(this);
 
+        adapters = new VideoFilesAdapters(MainActivity.this, dataForAdapter.getVideoData());
+        recyclerView.setAdapter(adapters);
         setRecyclerView();
 
         AdView adView;
@@ -95,8 +98,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
     }
 
     public void recyclerViewPart() {
-        VideoFilesAdapters adapters = new VideoFilesAdapters(MainActivity.this, dataForAdapter.getVideoData());
-        recyclerView.setAdapter(adapters);
+
         GridLayoutManager manager = new GridLayoutManager(MainActivity.this, 2);
         recyclerView.setLayoutManager(manager);
         registerForContextMenu(recyclerView);
@@ -176,7 +178,11 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
                 startActivity(a);
                 break;
             case R.id.reload:
-                setRecyclerView();
+                recreate();
+                break;
+
+            case R.id.help2:
+                startActivity(new Intent(MainActivity.this, PresentationActivity.class));
                 break;
             case R.id.share:
                 Intent sharingIntent = new Intent(android.content.Intent.ACTION_SEND);

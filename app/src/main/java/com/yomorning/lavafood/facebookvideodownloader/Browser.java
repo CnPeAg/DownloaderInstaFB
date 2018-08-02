@@ -124,7 +124,7 @@ public class Browser extends AppCompatActivity {
             DownloadManager.Request request = new DownloadManager.Request(uri);
             request.allowScanningByMediaScanner();
             String fileName = URLUtil.guessFileName(url, "Video", MimeTypeMap.getFileExtensionFromUrl(url));
-            String fullPath = Environment.getExternalStorageDirectory().getAbsolutePath() + "/FbVideoDownload";
+            String fullPath = Environment.getExternalStorageDirectory().getAbsolutePath() + "/FBVideoDownloader";
             File file = new File(fullPath);
             if (!file.exists()) {
                 file.mkdir();
@@ -169,6 +169,10 @@ public class Browser extends AppCompatActivity {
             case R.id.recycle_view:
                 showFacebookOnBrowser();
                 Toast.makeText(Browser.this, "Refreshing...", Toast.LENGTH_SHORT).show();
+                break;
+
+            case R.id.help:
+                startActivity(new Intent(Browser.this, PresentationActivity.class));
                 break;
             case R.id.share:
                 Intent sharingIntent = new Intent(android.content.Intent.ACTION_SEND);

@@ -44,12 +44,12 @@ public class VideoFilesAdapters extends RecyclerView.Adapter<VideoFilesAdapters.
     @NonNull
     public GridViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
         View view = inflater.inflate(R.layout.single_view_of_video, parent, false);
-        GridViewHolder viewHolder = new GridViewHolder(view);
-        return viewHolder;
+
+        return new GridViewHolder(view);
     }
 
     @Override
-    public void onBindViewHolder(GridViewHolder holder, int position) {
+    public void onBindViewHolder(@NonNull GridViewHolder holder, int position) {
         VideoModel model = dataList.get(position);
         holder.setViews(model);
     }
@@ -65,7 +65,7 @@ public class VideoFilesAdapters extends RecyclerView.Adapter<VideoFilesAdapters.
         ImageView videoThumbnail;
         TextView name;
 
-        public GridViewHolder(View itemView) {
+        private GridViewHolder(View itemView) {
             super(itemView);
             itemView.setOnClickListener(this);
             videoThumbnail = itemView.findViewById(R.id.video_thumbnail);
@@ -73,7 +73,7 @@ public class VideoFilesAdapters extends RecyclerView.Adapter<VideoFilesAdapters.
             itemView.setOnCreateContextMenuListener(this);
         }
 
-        public void setViews(VideoModel model) {
+        private void setViews(VideoModel model) {
             videoThumbnail.setImageBitmap(model.getImageBitmap());
             name.setText(model.getName());
         }
@@ -96,9 +96,6 @@ public class VideoFilesAdapters extends RecyclerView.Adapter<VideoFilesAdapters.
             contextMenu.setHeaderTitle("Select The Action");
             contextMenu.add(0, view.getId(), 0, "Call");
             contextMenu.add(0, view.getId(), 0, "SMS");
-        }
-
-        private void showContextMenu() {
         }
 
         @Override

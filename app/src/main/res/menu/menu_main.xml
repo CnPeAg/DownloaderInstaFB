@@ -24,6 +24,13 @@
         android:icon="@mipmap/sharing"
         android:title="Share"
         app:showAsAction="always"/>
+
+    <item
+        android:id="@+id/help"
+        android:orderInCategory="100"
+        android:title="Help"
+        app:showAsAction="never" />
+
     <item
         android:id="@+id/logout"
         android:orderInCategory="100"
