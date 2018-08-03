@@ -37,9 +37,6 @@ import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 import com.mngh.tuanvn.facebookvideodownloader.Controllers.VideoFilesAdapters;
 import com.mngh.tuanvn.facebookvideodownloader.Model.Get;
-import com.mngh.tuanvn.facebookvideodownloader.Model.VideoModel;
-
-import java.util.ArrayList;
 
 public class MainActivity extends AppCompatActivity implements View.OnClickListener {
 
@@ -122,6 +119,12 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         editor.apply();
 
         requestQueue = Volley.newRequestQueue(this);
+        requestQueue.addRequestFinishedListener(new RequestQueue.RequestFinishedListener<Object>() {
+            @Override
+            public void onRequestFinished(Request<Object> request) {
+                requestQueue.getCache().clear();
+            }
+        });
 
         GsonBuilder gsonBuilder = new GsonBuilder();
         gsonBuilder.setDateFormat("M/d/yy hh:mm a");
