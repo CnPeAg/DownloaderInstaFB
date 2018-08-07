@@ -1,4 +1,4 @@
-package com.mngh.tuanvn.facebookvideodownloader;
+package com.mngh.tuanvn.fbvideodownloader;
 
 /**
  * Created by KAMAL OLI on 11/08/2017.

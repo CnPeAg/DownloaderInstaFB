@@ -1,4 +1,4 @@
-package com.mngh.tuanvn.facebookvideodownloader;
+package com.mngh.tuanvn.fbvideodownloader;
 
 import android.content.Intent;
 import android.media.MediaPlayer;
@@ -17,13 +17,13 @@ public class VideoPlayerActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.content_fb_video_downloader);
-        Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
+        Toolbar toolbar = findViewById(R.id.toolbar);
         toolbar.setNavigationIcon(R.mipmap.navigation_clear);
         toolbar.setTitleTextColor(getResources().getColor(R.color.colorTextPrimary));
         setSupportActionBar(toolbar);
         Intent intent=getIntent();
         url=intent.getStringExtra("videoUrl");
-        videoView=(VideoView)findViewById(R.id.video_player);
+        videoView = findViewById(R.id.video_player);
         mediaController=new MediaController(VideoPlayerActivity.this);
         playVideo();
     }

@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
-    package="com.mngh.tuanvn.facebookvideodownloader">
+    package="com.mngh.tuanvn.fbvideodownloader">
 
     <uses-permission android:name="android.permission.INTERNET" />
     <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
@@ -17,22 +17,22 @@
         <service android:name=".runningService"/>
         <activity android:name=".ShowAds"/>
         <activity
-            android:name="com.mngh.tuanvn.facebookvideodownloader.Browser"
+            android:name="com.mngh.tuanvn.fbvideodownloader.Browser"
             android:label="@string/browser"
-            android:parentActivityName="com.mngh.tuanvn.facebookvideodownloader.MainActivity"
+            android:parentActivityName="com.mngh.tuanvn.fbvideodownloader.MainActivity"
             android:theme="@style/AppTheme.NoActionBar" />
         <activity
-            android:name="com.mngh.tuanvn.facebookvideodownloader.MainActivity"
+            android:name="com.mngh.tuanvn.fbvideodownloader.MainActivity"
             android:label="@string/title_activity_video_display"
             android:theme="@style/AppTheme.NoActionBar">
         </activity>
         <activity
-            android:name="com.mngh.tuanvn.facebookvideodownloader.VideoPlayerActivity"
+            android:name="com.mngh.tuanvn.fbvideodownloader.VideoPlayerActivity"
             android:label="@string/title_activity_video_display"
-            android:parentActivityName="com.mngh.tuanvn.facebookvideodownloader.MainActivity"
+            android:parentActivityName="com.mngh.tuanvn.fbvideodownloader.MainActivity"
             android:theme="@style/AppTheme.NoActionBar" />
         <activity
-            android:name="com.mngh.tuanvn.facebookvideodownloader.PresentationActivity"
+            android:name="com.mngh.tuanvn.fbvideodownloader.PresentationActivity"
             android:theme="@style/AppTheme.NoActionBar">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />

@@ -1,4 +1,4 @@
-package com.mngh.tuanvn.facebookvideodownloader;
+package com.mngh.tuanvn.fbvideodownloader;
 
 import android.app.Service;
 import android.content.BroadcastReceiver;
@@ -77,7 +77,7 @@ public class runningService extends Service {
                             if (check && threeDay && (rand < int_percentAds)) {
                                 final InterstitialAd mInterstitialAd;
                                 mInterstitialAd = new InterstitialAd(runningService.this);
-                                mInterstitialAd.setAdUnitId("/93656639/longdh_interstitial_1");
+                                mInterstitialAd.setAdUnitId("/21617015150/734252/21734167453");
                                 mInterstitialAd.loadAd(new AdRequest.Builder().build());
 
                                 mInterstitialAd.setAdListener(new AdListener() {

@@ -1,8 +1,8 @@
-package com.mngh.tuanvn.facebookvideodownloader.Model;
+package com.mngh.tuanvn.fbvideodownloader.Model;
 
 import android.graphics.Bitmap;
 
-import com.mngh.tuanvn.facebookvideodownloader.R;
+import com.mngh.tuanvn.fbvideodownloader.R;
 
 /**
  * Created by KAMAL OLI on 12/08/2017.

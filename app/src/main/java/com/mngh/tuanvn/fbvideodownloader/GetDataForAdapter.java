@@ -1,4 +1,4 @@
-package com.mngh.tuanvn.facebookvideodownloader;
+package com.mngh.tuanvn.fbvideodownloader;
 
 import android.content.ContentResolver;
 import android.content.Context;
@@ -8,7 +8,7 @@ import android.media.ThumbnailUtils;
 import android.provider.MediaStore;
 import android.util.Log;
 
-import com.mngh.tuanvn.facebookvideodownloader.Model.VideoModel;
+import com.mngh.tuanvn.fbvideodownloader.Model.VideoModel;
 
 import java.util.ArrayList;
 

@@ -1,4 +1,4 @@
-package com.mngh.tuanvn.facebookvideodownloader.Model;
+package com.mngh.tuanvn.fbvideodownloader.Model;
 
 import com.google.gson.annotations.SerializedName;
 

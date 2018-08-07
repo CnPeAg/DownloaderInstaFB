@@ -1,4 +1,4 @@
-package com.mngh.tuanvn.facebookvideodownloader;
+package com.mngh.tuanvn.fbvideodownloader;
 
 import android.Manifest;
 import android.content.DialogInterface;
@@ -35,8 +35,8 @@ import com.facebook.ads.AdSize;
 import com.facebook.ads.AdView;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
-import com.mngh.tuanvn.facebookvideodownloader.Controllers.VideoFilesAdapters;
-import com.mngh.tuanvn.facebookvideodownloader.Model.Get;
+import com.mngh.tuanvn.fbvideodownloader.Controllers.VideoFilesAdapters;
+import com.mngh.tuanvn.fbvideodownloader.Model.Get;
 
 public class MainActivity extends AppCompatActivity implements View.OnClickListener {
 
