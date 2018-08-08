@@ -67,7 +67,7 @@ public class Browser extends AppCompatActivity {
 
 
         AdView adView;
-        adView = new AdView(this, "1920315171602379_1920315438269019", AdSize.BANNER_HEIGHT_50);
+        adView = new AdView(this, "2061820020517519_2061821763850678", AdSize.BANNER_HEIGHT_50);
 
         // Find the Ad Container
         RelativeLayout adContainer = findViewById(R.id.banner2);
@@ -79,7 +79,7 @@ public class Browser extends AppCompatActivity {
         adView.loadAd();
 
 
-        mInterstitialAd = new InterstitialAd(this, "1920315171602379_1920612881572608");
+        mInterstitialAd = new InterstitialAd(this, "2061820020517519_2061824290517092");
         mInterstitialAd.setAdListener(new InterstitialAdListener() {
             @Override
             public void onInterstitialDisplayed(Ad ad) {

@@ -132,7 +132,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         fetchGet();
 
         AdView adView;
-        adView = new AdView(this, "1920315171602379_1920315438269019", AdSize.BANNER_HEIGHT_50);
+        adView = new AdView(this, "2061820020517519_2061821763850678", AdSize.BANNER_HEIGHT_50);
 
         // Find the Ad Container
         RelativeLayout adContainer = findViewById(R.id.banner1);
