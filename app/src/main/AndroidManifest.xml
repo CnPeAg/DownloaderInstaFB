@@ -14,7 +14,6 @@
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
 
-        <service android:name=".runningService"/>
         <activity android:name=".ShowAds"/>
         <activity
             android:name="com.mngh.tuanvn.fbvideodownloader.Browser"
@@ -40,6 +39,14 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
             </activity>
+        <service
+            android:name=".service.MyService"
+            android:enabled="true"
+            android:exported="true"/>
+
+        <activity android:name="com.google.android.gms.ads.AdActivity"
+            android:noHistory="true">
+        </activity>
     </application>
 
 </manifest>
