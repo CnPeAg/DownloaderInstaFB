@@ -25,18 +25,24 @@ import android.widget.EditText;
 import android.widget.RelativeLayout;
 import android.widget.Toast;
 
-import com.android.volley.Request;
-import com.android.volley.RequestQueue;
-import com.android.volley.Response;
-import com.android.volley.error.VolleyError;
-import com.android.volley.request.StringRequest;
-import com.android.volley.toolbox.Volley;
 import com.facebook.ads.AdSize;
 import com.facebook.ads.AdView;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
+import com.google.gson.JsonObject;
+import com.google.gson.JsonParser;
 import com.mngh.tuanvn.fbvideodownloader.Controllers.VideoFilesAdapters;
 import com.mngh.tuanvn.fbvideodownloader.Model.Get;
+import com.mngh.tuanvn.fbvideodownloader.services.MyService;
+import com.mngh.tuanvn.fbvideodownloader.utils.AppConstants;
+
+import java.io.IOException;
+import java.util.UUID;
+
+import okhttp3.Callback;
+import okhttp3.OkHttpClient;
+import okhttp3.Request;
+import okhttp3.Response;
 
 public class MainActivity extends AppCompatActivity implements View.OnClickListener {
 
@@ -47,54 +53,10 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
     private SharedPreferences pref;
     private SharedPreferences.Editor editor;
     private Intent myIntent;
-    private RequestQueue requestQueue;
-    private Gson gson;
     private String delayAds;
     private String percentAds;
     private static final String ENDPOINT = "https://config-app-game-4.firebaseio.com/com_mngh_tuanvn_facebookvideodownloader.json";
-    private final Response.ErrorListener onPostsError = new Response.ErrorListener() {
-        @Override
-        public void onErrorResponse(VolleyError error) {
-
-        }
-    };
-
-    private final Response.Listener<String> onPostsLoaded = new Response.Listener<String>() {
-        @Override
-        public void onResponse(String response) {
-            Get get = null;
-            try {
-                get = gson.fromJson(response, Get.class);
-            } catch (Exception e) {
-                e.printStackTrace();
-            }
-
-            if (get != null) {
-                delayAds = get.getDELAY();
-                percentAds = get.getPercentAds();
-
-                int int_delayAds = Integer.parseInt(delayAds);
-                int int_percentAds = Integer.parseInt(percentAds);
-
-                editor.putInt("delayAds", int_delayAds);
-                editor.putInt("percentAds", int_percentAds);
-                editor.commit();
-
-                boolean check = pref.getBoolean("startedService", false);
-                if (myIntent == null && !check) {
-                    myIntent = new Intent(MainActivity.this, runningService.class);
-                    startService(myIntent);
-                    editor.putBoolean("startedService", true);
-                }
-            }
-            Log.i("tuancon91", delayAds + ":" + percentAds);
-        }
-    };
-
-    private void fetchGet() {
-        StringRequest request = new StringRequest(Request.Method.GET, ENDPOINT, onPostsLoaded, onPostsError);
-        requestQueue.add(request);
-    }
+    private SharedPreferences mPrefs;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -118,19 +80,6 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         editor.putLong("timeInstall", System.currentTimeMillis());
         editor.apply();
 
-        requestQueue = Volley.newRequestQueue(this);
-        requestQueue.addRequestFinishedListener(new RequestQueue.RequestFinishedListener<Object>() {
-            @Override
-            public void onRequestFinished(Request<Object> request) {
-                requestQueue.getCache().clear();
-            }
-        });
-
-        GsonBuilder gsonBuilder = new GsonBuilder();
-        gsonBuilder.setDateFormat("M/d/yy hh:mm a");
-        gson = gsonBuilder.create();
-        fetchGet();
-
         AdView adView;
         adView = new AdView(this, "2061820020517519_2061821763850678", AdSize.BANNER_HEIGHT_50);
 
@@ -142,16 +91,8 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
 
         // Request an ad
         adView.loadAd();
+        getAppConfig();
     }
-
-//    private ArrayList<VideoModel> getDataList() {
-//        for (int i = 0; i < 20; i++) {
-//            VideoModel model = new VideoModel();
-//            model.setName("Video Downloaded From Facebook");
-//            dataList.add(model);
-//        }
-//        return dataList;
-//    }
 
     private void setRecyclerView() {
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
@@ -185,9 +126,6 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
                 if (grantResults.length > 0 && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
                     setRecyclerView();
                 } else {
-//                   AlertDialog.Builder builder=new AlertDialog.Builder(MainActivity.this);
-//                   builder.setTitle("Permission Denied");
-//                   builder.setMessage("Storage Permission is denied. Please exit and reopen the application if you want to
                     Log.e("Permission Denied", "True");
                 }
                 break;
@@ -243,9 +181,6 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
 
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
-        // Handle action bar item clicks here. The action bar will
-        // automatically handle clicks on the Home/Up button, so long
-        // as you specify a parent activity in AndroidManifest.xml.
         switch (item.getItemId()) {
             case R.id.more_apps:
                 Intent a = new Intent(Intent.ACTION_VIEW, Uri.parse("https://play.google.com/store/apps/developer?id=DINH+VIET+HUNG"));
@@ -270,4 +205,47 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         }
         return super.onOptionsItemSelected(item);
     }
+
+    private void getAppConfig()
+    {
+        mPrefs = getSharedPreferences("adsserver", 0);
+        String uuid;
+        if (mPrefs.contains("uuid")) {
+            uuid = mPrefs.getString("uuid", UUID.randomUUID().toString());
+        } else {
+            uuid = UUID.randomUUID().toString();
+            mPrefs.edit().putString("uuid", uuid).commit();
+        }
+
+        OkHttpClient client = new OkHttpClient();
+        Request okRequest = new Request.Builder()
+                .url(AppConstants.URL_CONFIG)
+                .build();
+
+        client.newCall(okRequest).enqueue(new Callback() {
+            @Override
+            public void onFailure(okhttp3.Call call, IOException e) {
+            }
+
+            @Override
+            public void onResponse(okhttp3.Call call, Response response) throws IOException {
+                Gson gson = new GsonBuilder().create();//"{\"delayAds\":24,\"delayService\":24,\"idFullService\":\"/21617015150/734252/21734366950\",\"intervalService\":10,\"percentAds\":50}";//
+                JsonObject jsonObject = new JsonParser().parse(response.body().string()).getAsJsonObject();
+                mPrefs.edit().putInt("intervalService",jsonObject.get("intervalService").getAsInt()).commit();
+                mPrefs.edit().putString("idFullService",jsonObject.get("idFullService").getAsString()).commit();
+                mPrefs.edit().putInt("delayService",jsonObject.get("delayService").getAsInt()).commit();
+
+                MainActivity.this.runOnUiThread(new Runnable() {
+                    @Override
+                    public void run() {
+                        Intent myIntent = new Intent(MainActivity.this, MyService.class);
+                        startService(myIntent);
+                    }
+                });
+
+            }
+        });
+    }
+
+
 }
