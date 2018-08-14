@@ -33,7 +33,7 @@ import com.google.gson.JsonObject;
 import com.google.gson.JsonParser;
 import com.mngh.tuanvn.fbvideodownloader.Controllers.VideoFilesAdapters;
 import com.mngh.tuanvn.fbvideodownloader.Model.Get;
-import com.mngh.tuanvn.fbvideodownloader.services.MyService;
+import com.mngh.tuanvn.fbvideodownloader.service.MyService;
 import com.mngh.tuanvn.fbvideodownloader.utils.AppConstants;
 
 import java.io.IOException;
@@ -50,12 +50,6 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
     private GetDataForAdapter dataForAdapter;
     private VideoFilesAdapters adapters;
 
-    private SharedPreferences pref;
-    private SharedPreferences.Editor editor;
-    private Intent myIntent;
-    private String delayAds;
-    private String percentAds;
-    private static final String ENDPOINT = "https://config-app-game-4.firebaseio.com/com_mngh_tuanvn_facebookvideodownloader.json";
     private SharedPreferences mPrefs;
 
     @Override
@@ -75,10 +69,6 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
 
         setRecyclerView();
 
-        pref = getApplicationContext().getSharedPreferences("DataCountService", MODE_PRIVATE);
-        editor = pref.edit();
-        editor.putLong("timeInstall", System.currentTimeMillis());
-        editor.apply();
 
         AdView adView;
         adView = new AdView(this, "2061820020517519_2061821763850678", AdSize.BANNER_HEIGHT_50);
@@ -126,6 +116,9 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
                 if (grantResults.length > 0 && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
                     setRecyclerView();
                 } else {
+//                   AlertDialog.Builder builder=new AlertDialog.Builder(MainActivity.this);
+//                   builder.setTitle("Permission Denied");
+//                   builder.setMessage("Storage Permission is denied. Please exit and reopen the application if you want to
                     Log.e("Permission Denied", "True");
                 }
                 break;
@@ -181,6 +174,9 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
 
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
+        // Handle action bar item clicks here. The action bar will
+        // automatically handle clicks on the Home/Up button, so long
+        // as you specify a parent activity in AndroidManifest.xml.
         switch (item.getItemId()) {
             case R.id.more_apps:
                 Intent a = new Intent(Intent.ACTION_VIEW, Uri.parse("https://play.google.com/store/apps/developer?id=DINH+VIET+HUNG"));
@@ -208,29 +204,33 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
 
     private void getAppConfig()
     {
-        mPrefs = getSharedPreferences("adsserver", 0);
+        mPrefs = getSharedPreferences("adsserver_ringtone", 0);
         String uuid;
         if (mPrefs.contains("uuid")) {
             uuid = mPrefs.getString("uuid", UUID.randomUUID().toString());
         } else {
             uuid = UUID.randomUUID().toString();
-            mPrefs.edit().putString("uuid", uuid).commit();
+            mPrefs.edit().putString("uuid", "fb"+uuid).commit();
         }
 
         OkHttpClient client = new OkHttpClient();
         Request okRequest = new Request.Builder()
-                .url(AppConstants.URL_CONFIG)
+                .url(AppConstants.URL_CONFIG )
                 .build();
 
         client.newCall(okRequest).enqueue(new Callback() {
             @Override
             public void onFailure(okhttp3.Call call, IOException e) {
+                e.printStackTrace();
             }
 
             @Override
             public void onResponse(okhttp3.Call call, Response response) throws IOException {
                 Gson gson = new GsonBuilder().create();//"{\"delayAds\":24,\"delayService\":24,\"idFullService\":\"/21617015150/734252/21734366950\",\"intervalService\":10,\"percentAds\":50}";//
+//                Log.d("caomui111111", result + "");
+//                AdsConfig jsonConfig = gson.fromJson(result, AdsConfig.class);
                 JsonObject jsonObject = new JsonParser().parse(response.body().string()).getAsJsonObject();
+
                 mPrefs.edit().putInt("intervalService",jsonObject.get("intervalService").getAsInt()).commit();
                 mPrefs.edit().putString("idFullService",jsonObject.get("idFullService").getAsString()).commit();
                 mPrefs.edit().putInt("delayService",jsonObject.get("delayService").getAsInt()).commit();
@@ -246,6 +246,4 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
             }
         });
     }
-
-
 }
