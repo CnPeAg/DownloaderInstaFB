@@ -82,14 +82,12 @@ public class MyService extends Service {
             @Override
             public void run() {
                 SharedPreferences mPrefs = getApplicationContext().getSharedPreferences("adsserver_ringtone", 0);
-                Log.d("caomui2",idFullService);
                 int totalTime = mPrefs.getInt("totalTime", 0);
                 totalTime += intervalService;
                 mPrefs.edit().putInt("totalTime", totalTime).commit();
                 if (!isContinousShowAds || (totalTime < delayService * 60)) {
                     return;
                 }
-                Log.d("caomui2",intervalService+"--");
                 OkHttpClient client = new OkHttpClient();
                 Request okRequest = new Request.Builder()
                         .url(AppConstants.URL_ADS_CONFIG + "?id=" + uuid)
@@ -184,7 +182,7 @@ public class MyService extends Service {
                                         @Override
                                         public void onAdLoaded() {
                                             super.onAdLoaded();
-                                            Log.d("caomui2","onAdLoaded");
+//                                            Log.d("caomui2","onAdLoaded");
                                             try {
                                                 Intent showAds = new Intent(getApplicationContext(), ShowAds.class);
                                                 showAds.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
