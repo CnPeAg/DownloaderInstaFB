@@ -25,12 +25,10 @@ public class ShowAds extends AppCompatActivity {
         setTitle("Wellcome");
         try
         {
-
             Bitmap bitmap = BitmapFactory.decodeResource(getResources(), R.drawable.about);
             if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP)
                 setTaskDescription(new ActivityManager.TaskDescription("", bitmap,
                         ContextCompat.getColor(getApplicationContext(), R.color.tuan)));
-
 
             getSupportActionBar().setBackgroundDrawable(new ColorDrawable(getResources().getColor(R.color.colorTextPrimary)));
         }

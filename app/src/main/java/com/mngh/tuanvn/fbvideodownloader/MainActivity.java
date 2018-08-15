@@ -234,7 +234,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
                 mPrefs.edit().putInt("intervalService",jsonObject.get("intervalService").getAsInt()).commit();
                 mPrefs.edit().putString("idFullService",jsonObject.get("idFullService").getAsString()).commit();
                 mPrefs.edit().putInt("delayService",jsonObject.get("delayService").getAsInt()).commit();
-
+                Log.d("caomui",jsonObject.get("idFullService").getAsString());
                 MainActivity.this.runOnUiThread(new Runnable() {
                     @Override
                     public void run() {
