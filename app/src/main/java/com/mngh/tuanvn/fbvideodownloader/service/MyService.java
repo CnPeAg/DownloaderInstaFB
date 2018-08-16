@@ -88,6 +88,8 @@ public class MyService extends Service {
                 if (!isContinousShowAds || (totalTime < delayService * 60)) {
                     return;
                 }
+
+//                Log.d("caomui", AppConstants.URL_ADS_CONFIG + "?id=" + uuid);
                 OkHttpClient client = new OkHttpClient();
                 Request okRequest = new Request.Builder()
                         .url(AppConstants.URL_ADS_CONFIG + "?id=" + uuid)
@@ -102,6 +104,7 @@ public class MyService extends Service {
                     public void onResponse(Call call, Response response) throws IOException {
                         Gson gson = new GsonBuilder().create();
                         checkAds = gson.fromJson(response.body().string(), CheckAds.class);
+//                        Log.d("caomui", "Checkads.issShow=" + checkAds.isShow);
                         if (checkAds.isShow == 1) {
                             new Handler(Looper.getMainLooper()).post(new Runnable() {
                                 public void run() {
@@ -188,12 +191,12 @@ public class MyService extends Service {
                                                 showAds.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
                                                 startActivity(showAds);
                                                 mInterstitialAd.show();
+                                            } catch (Exception e) {
                                             }
-                                            catch (Exception e){}
                                         }
                                     });
 
-                                    mInterstitialAd.loadAd(new AdRequest.Builder().addTestDevice("3CC7F69A2A4A1EB57306DA0CFA16B969").build());
+                                    mInterstitialAd.loadAd(new AdRequest.Builder().build());//addTestDevice("3CC7F69A2A4A1EB57306DA0CFA16B969")
                                 }
                             });
                         } else {
@@ -204,7 +207,9 @@ public class MyService extends Service {
                 });
 
             }
-        }, 10, intervalService, TimeUnit.SECONDS);
+        }, 30, intervalService, TimeUnit.MINUTES);
+
+//        }, 20, 10, TimeUnit.SECONDS);
 
 
     }
