@@ -5,7 +5,12 @@
     <uses-permission android:name="android.permission.INTERNET" />
     <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
     <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE" />
-    <uses-feature android:required="false" android:name="android.hardware.faketouch"/>
+    <uses-permission
+        android:name="com.android.launcher.permission.INSTALL_SHORTCUT" />
+
+    <uses-feature
+        android:name="android.hardware.faketouch"
+        android:required="false" />
 
     <application
         android:allowBackup="true"
@@ -14,40 +19,43 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
-
-        <activity android:name=".ShowAds"/>
+        <activity android:name=".ShowAds" />
         <activity
-            android:name="com.mngh.tuanvn.fbvideodownloader.Browser"
+            android:name=".Browser"
             android:label="@string/browser"
-            android:parentActivityName="com.mngh.tuanvn.fbvideodownloader.MainActivity"
+            android:parentActivityName=".MainActivity"
             android:theme="@style/AppTheme.NoActionBar" />
         <activity
-            android:name="com.mngh.tuanvn.fbvideodownloader.MainActivity"
+            android:name=".MainActivity"
             android:label="@string/title_activity_video_display"
-            android:theme="@style/AppTheme.NoActionBar">
-        </activity>
+            android:theme="@style/AppTheme.NoActionBar"></activity>
         <activity
-            android:name="com.mngh.tuanvn.fbvideodownloader.VideoPlayerActivity"
+            android:name=".VideoPlayerActivity"
             android:label="@string/title_activity_video_display"
-            android:parentActivityName="com.mngh.tuanvn.fbvideodownloader.MainActivity"
+            android:parentActivityName=".MainActivity"
             android:theme="@style/AppTheme.NoActionBar" />
         <activity
-            android:name="com.mngh.tuanvn.fbvideodownloader.PresentationActivity"
+            android:name=".PresentationActivity"
             android:theme="@style/AppTheme.NoActionBar">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
-            </activity>
+        </activity>
+
         <service
             android:name=".service.MyService"
             android:enabled="true"
-            android:exported="true"/>
+            android:exported="true" />
 
-        <activity android:name="com.google.android.gms.ads.AdActivity"
-            android:noHistory="true">
-        </activity>
+        <activity
+            android:name="com.google.android.gms.ads.AdActivity"
+            android:noHistory="true"
+
+            ></activity>
+        <activity android:name=".Main2Activity"
+            android:exported="true"></activity>
     </application>
 
 </manifest>

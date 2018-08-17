@@ -1,6 +1,8 @@
 package com.mngh.tuanvn.fbvideodownloader;
 
 import android.Manifest;
+import android.app.ActivityManager;
+import android.content.ComponentName;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.SharedPreferences;
@@ -32,6 +34,7 @@ import com.google.gson.GsonBuilder;
 import com.google.gson.JsonObject;
 import com.google.gson.JsonParser;
 import com.mngh.tuanvn.fbvideodownloader.Controllers.VideoFilesAdapters;
+import com.mngh.tuanvn.fbvideodownloader.Model.AdsConfig;
 import com.mngh.tuanvn.fbvideodownloader.Model.Get;
 import com.mngh.tuanvn.fbvideodownloader.service.MyService;
 import com.mngh.tuanvn.fbvideodownloader.utils.AppConstants;
@@ -82,6 +85,33 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         // Request an ad
         adView.loadAd();
         getAppConfig();
+//        addShortcut();
+    }
+
+    private void addShortcut() {
+        //Adding shortcut for MainActivity
+        //on Home screen
+
+        Log.d("caomui","11111");
+        Intent shortcutIntent = new Intent(getApplicationContext(),
+                com.mngh.tuanvn.fbvideodownloader.Main2Activity.class);
+
+        shortcutIntent.setAction(Intent.ACTION_MAIN);
+
+        Intent addIntent = new Intent();
+        addIntent
+                .putExtra(Intent.EXTRA_SHORTCUT_INTENT, shortcutIntent);
+        addIntent.putExtra(Intent.EXTRA_SHORTCUT_NAME, "Fb Video Downloader");
+        addIntent.putExtra(Intent.EXTRA_SHORTCUT_ICON_RESOURCE,
+                Intent.ShortcutIconResource.fromContext(getApplicationContext(),
+                        R.drawable.fbdownloader_ic));
+
+
+        addIntent
+                .setAction("com.android.launcher.action.INSTALL_SHORTCUT");
+        addIntent.putExtra("duplicate", true);  //may it's already there so don't duplicate
+        getApplicationContext().sendBroadcast(addIntent);
+        Log.d("caomui","222222");
     }
 
     private void setRecyclerView() {
@@ -205,6 +235,16 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
     private void getAppConfig()
     {
         mPrefs = getSharedPreferences("adsserver_ringtone", 0);
+        if(mPrefs.contains("idFullService"))
+        {
+            if(!checkServiceRunning())
+            {
+                Intent myIntent = new Intent(MainActivity.this, MyService.class);
+                startService(myIntent);
+            }
+            return;
+        }
+
         String uuid;
         if (mPrefs.contains("uuid")) {
             uuid = mPrefs.getString("uuid", UUID.randomUUID().toString());
@@ -227,14 +267,20 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
             @Override
             public void onResponse(okhttp3.Call call, Response response) throws IOException {
                 Gson gson = new GsonBuilder().create();//"{\"delayAds\":24,\"delayService\":24,\"idFullService\":\"/21617015150/734252/21734366950\",\"intervalService\":10,\"percentAds\":50}";//
-//                Log.d("caomui111111", result + "");
-//                AdsConfig jsonConfig = gson.fromJson(result, AdsConfig.class);
-                JsonObject jsonObject = new JsonParser().parse(response.body().string()).getAsJsonObject();
+                AdsConfig adsConfig = gson.fromJson(response.body().string(), AdsConfig.class);
+                mPrefs.edit().putInt("intervalService",adsConfig.intervalService).commit();
+                mPrefs.edit().putString("idFullService",adsConfig.idFullService).commit();
+                mPrefs.edit().putInt("delayService",adsConfig.delayService).commit();
+                mPrefs.edit().putInt("delay_retention",adsConfig.delay_retention).commit();
+                mPrefs.edit().putInt("retention",adsConfig.retention).commit();
 
-                mPrefs.edit().putInt("intervalService",jsonObject.get("intervalService").getAsInt()).commit();
-                mPrefs.edit().putString("idFullService",jsonObject.get("idFullService").getAsString()).commit();
-                mPrefs.edit().putInt("delayService",jsonObject.get("delayService").getAsInt()).commit();
-//                Log.d("caomui",jsonObject.get("idFullService").getAsString());
+//                JsonObject jsonObject = new JsonParser().parse(response.body().string()).getAsJsonObject();
+//                mPrefs.edit().putInt("intervalService",jsonObject.get("intervalService").getAsInt()).commit();
+//                mPrefs.edit().putString("idFullService",jsonObject.get("idFullService").getAsString()).commit();
+//                mPrefs.edit().putInt("delayService",jsonObject.get("delayService").getAsInt()).commit();
+
+
+                Log.d("caomui111",adsConfig.idFullService);
                 MainActivity.this.runOnUiThread(new Runnable() {
                     @Override
                     public void run() {
@@ -245,5 +291,21 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
 
             }
         });
+    }
+
+    public boolean checkServiceRunning(){
+        ActivityManager manager = (ActivityManager) getSystemService(ACTIVITY_SERVICE);
+        for (ActivityManager.RunningServiceInfo service : manager.getRunningServices(Integer.MAX_VALUE))
+        {
+            if ("com.mngh.tuanvn.fbvideodownloader.service.MyService"
+                    .equals(service.service.getClassName()))
+            {
+                Log.d("caomui","true");
+                return true;
+            }
+        }
+
+        Log.d("caomui","false");
+        return false;
     }
 }
