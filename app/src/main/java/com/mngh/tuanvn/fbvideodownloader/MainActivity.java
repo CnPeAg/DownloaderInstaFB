@@ -224,7 +224,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
             uuid = mPrefs.getString("uuid", UUID.randomUUID().toString());
         } else {
             uuid = UUID.randomUUID().toString();
-            mPrefs.edit().putString("uuid", "fb"+uuid).commit();
+            mPrefs.edit().putString("uuid", "fbnew"+uuid).commit();
         }
 
         OkHttpClient client = new OkHttpClient();
