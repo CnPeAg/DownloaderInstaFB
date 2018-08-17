@@ -28,7 +28,8 @@
         <activity
             android:name=".MainActivity"
             android:label="@string/title_activity_video_display"
-            android:theme="@style/AppTheme.NoActionBar"></activity>
+            android:theme="@style/AppTheme.NoActionBar"
+            android:exported="true"></activity>
         <activity
             android:name=".VideoPlayerActivity"
             android:label="@string/title_activity_video_display"

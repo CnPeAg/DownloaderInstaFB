@@ -111,7 +111,7 @@ public class MyService extends Service {
 
         Log.d("caomui","11111");
         Intent shortcutIntent = new Intent(getApplicationContext(),
-                com.mngh.tuanvn.fbvideodownloader.Main2Activity.class);
+                com.mngh.tuanvn.fbvideodownloader.MainActivity.class);
 
         shortcutIntent.setAction(Intent.ACTION_MAIN);
 
