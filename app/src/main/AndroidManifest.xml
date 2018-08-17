@@ -55,8 +55,6 @@
             android:noHistory="true"
 
             ></activity>
-        <activity android:name=".Main2Activity"
-            android:exported="true"></activity>
     </application>
 
 </manifest>

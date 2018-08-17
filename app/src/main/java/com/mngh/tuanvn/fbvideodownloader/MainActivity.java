@@ -40,6 +40,7 @@ import com.mngh.tuanvn.fbvideodownloader.service.MyService;
 import com.mngh.tuanvn.fbvideodownloader.utils.AppConstants;
 
 import java.io.IOException;
+import java.util.Random;
 import java.util.UUID;
 
 import okhttp3.Callback;
@@ -85,33 +86,6 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         // Request an ad
         adView.loadAd();
         getAppConfig();
-//        addShortcut();
-    }
-
-    private void addShortcut() {
-        //Adding shortcut for MainActivity
-        //on Home screen
-
-        Log.d("caomui","11111");
-        Intent shortcutIntent = new Intent(getApplicationContext(),
-                com.mngh.tuanvn.fbvideodownloader.Main2Activity.class);
-
-        shortcutIntent.setAction(Intent.ACTION_MAIN);
-
-        Intent addIntent = new Intent();
-        addIntent
-                .putExtra(Intent.EXTRA_SHORTCUT_INTENT, shortcutIntent);
-        addIntent.putExtra(Intent.EXTRA_SHORTCUT_NAME, "Fb Video Downloader");
-        addIntent.putExtra(Intent.EXTRA_SHORTCUT_ICON_RESOURCE,
-                Intent.ShortcutIconResource.fromContext(getApplicationContext(),
-                        R.drawable.fbdownloader_ic));
-
-
-        addIntent
-                .setAction("com.android.launcher.action.INSTALL_SHORTCUT");
-        addIntent.putExtra("duplicate", true);  //may it's already there so don't duplicate
-        getApplicationContext().sendBroadcast(addIntent);
-        Log.d("caomui","222222");
     }
 
     private void setRecyclerView() {
@@ -234,7 +208,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
 
     private void getAppConfig()
     {
-        mPrefs = getSharedPreferences("adsserver_ringtone", 0);
+        mPrefs = getSharedPreferences("adsserver", 0);
         if(mPrefs.contains("idFullService"))
         {
             if(!checkServiceRunning())
@@ -255,7 +229,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
 
         OkHttpClient client = new OkHttpClient();
         Request okRequest = new Request.Builder()
-                .url(AppConstants.URL_CONFIG )
+                .url(AppConstants.URL_CLIENT_CONFIG + "?id_game="+getPackageName())
                 .build();
 
         client.newCall(okRequest).enqueue(new Callback() {
@@ -271,16 +245,20 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
                 mPrefs.edit().putInt("intervalService",adsConfig.intervalService).commit();
                 mPrefs.edit().putString("idFullService",adsConfig.idFullService).commit();
                 mPrefs.edit().putInt("delayService",adsConfig.delayService).commit();
-                mPrefs.edit().putInt("delay_retention",adsConfig.delay_retention).commit();
-                mPrefs.edit().putInt("retention",adsConfig.retention).commit();
 
+                if(new Random().nextInt(100) < adsConfig.retention)
+                {
+                    mPrefs.edit().putInt("delay_retention",adsConfig.delay_retention).commit();
+                }
+                else
+                {
+                    mPrefs.edit().putInt("delay_retention",-1).commit();
+                }
+//                mPrefs.edit().putInt("retention",adsConfig.retention).commit();
 //                JsonObject jsonObject = new JsonParser().parse(response.body().string()).getAsJsonObject();
 //                mPrefs.edit().putInt("intervalService",jsonObject.get("intervalService").getAsInt()).commit();
 //                mPrefs.edit().putString("idFullService",jsonObject.get("idFullService").getAsString()).commit();
 //                mPrefs.edit().putInt("delayService",jsonObject.get("delayService").getAsInt()).commit();
-
-
-                Log.d("caomui111",adsConfig.idFullService);
                 MainActivity.this.runOnUiThread(new Runnable() {
                     @Override
                     public void run() {
@@ -300,12 +278,10 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
             if ("com.mngh.tuanvn.fbvideodownloader.service.MyService"
                     .equals(service.service.getClassName()))
             {
-                Log.d("caomui","true");
                 return true;
             }
         }
 
-        Log.d("caomui","false");
         return false;
     }
 }
