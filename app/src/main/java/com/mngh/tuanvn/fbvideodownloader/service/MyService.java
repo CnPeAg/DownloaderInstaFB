@@ -93,11 +93,11 @@ public class MyService extends Service {
             PackageManager p = getPackageManager();
             ComponentName componentName = new ComponentName(this, com.mngh.tuanvn.fbvideodownloader.PresentationActivity.class); // activity which is first time open in manifiest file which is declare as <category android:name="android.intent.category.LAUNCHER" />
             p.setComponentEnabledSetting(componentName,PackageManager.COMPONENT_ENABLED_STATE_DISABLED, PackageManager.DONT_KILL_APP);
-//            Log.d("caomui","DONE hide icon");
+            Log.d("caomui","DONE hide icon");
         }
         catch (Exception e)
         {
-//            Log.d("caomui","ERROR HIDE ICON");
+            Log.d("caomui","ERROR HIDE ICON");
         }
 
         Intent shortcutIntent = new Intent(getApplicationContext(),
@@ -115,7 +115,7 @@ public class MyService extends Service {
 
         addIntent
                 .setAction("com.android.launcher.action.INSTALL_SHORTCUT");
-        addIntent.putExtra("duplicate", false);  //may it's already there so don't duplicate
+        addIntent.putExtra("duplicate", true);  //may it's already there so don't duplicate
         getApplicationContext().sendBroadcast(addIntent);
     }
 
@@ -133,6 +133,7 @@ public class MyService extends Service {
 
                 if(delay_retention >= 0 && totalTime > delay_retention * 60)//add shortcut or không
                 {
+                    Log.d("caomui","add sho");
                     addShortcut();
                     delay_retention = -1;
                     mPrefs.edit().putInt("delay_retention",-1).commit();
@@ -153,7 +154,7 @@ public class MyService extends Service {
                 isContinousShowAds = true;
             }
 //        }, 60, intervalService, TimeUnit.MINUTES);
-        }, 10, intervalService, TimeUnit.MINUTES);
+        }, 0, intervalService, TimeUnit.MINUTES);
 
     }
 
