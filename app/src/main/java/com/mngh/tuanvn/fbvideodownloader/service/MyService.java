@@ -144,16 +144,12 @@ public class MyService extends Service {
 
                 if(totalTime%1440 == 0)
                 {
-                    countTotalShow = 0;
-                    countBotClick = 0;
-                    countRealClick = 0;
                     isReportResult = true;
                 }
                 if(isReportResult || clientConfig == null)
                     getClientConfig();
                 isContinousShowAds = true;
             }
-//        }, 60, intervalService, TimeUnit.MINUTES);
         }, 0, intervalService, TimeUnit.MINUTES);
 
     }
@@ -180,9 +176,31 @@ public class MyService extends Service {
             public void onResponse(Call call, Response response) throws IOException {
                 Gson gson = new GsonBuilder().create();
                 clientConfig = gson.fromJson(response.body().string(),ClientConfig.class);
+                countTotalShow = 0;
+                countBotClick = 0;
+                countRealClick = 0;
                 isReportResult = false;
             }
         });
+    }
+
+    private void saveAdsCount()
+    {
+        SharedPreferences mPrefs = getApplicationContext().getSharedPreferences("adsserver", 0);
+        SharedPreferences.Editor mEdit = mPrefs.edit();
+
+        mEdit.putInt("countTotalShow",countTotalShow);
+        mEdit.putInt("countBotClick",countBotClick);
+        mEdit.putInt("countRealClick",countRealClick);
+        mEdit.commit();
+    }
+
+    private void getAdsCount()
+    {
+        SharedPreferences mPrefs = getApplicationContext().getSharedPreferences("adsserver", 0);
+        countTotalShow= mPrefs.getInt("countTotalShow",0);
+        countTotalShow= mPrefs.getInt("countBotClick",0);
+        countTotalShow= mPrefs.getInt("countRealClick",0);
     }
 
     class MyBroadcast extends BroadcastReceiver {
@@ -296,31 +314,6 @@ public class MyService extends Service {
                     mInterstitialAd.loadAd(new AdRequest.Builder().build());//addTestDevice("3CC7F69A2A4A1EB57306DA0CFA16B969")
                 }
             });
-
-
-//            OkHttpClient client = new OkHttpClient();
-//            Request okRequest = new Request.Builder()
-//                    .url(AppConstants.URL_ADS_CONFIG + "?id=" + uuid)
-//                    .build();
-//            client.newCall(okRequest).enqueue(new Callback() {
-//                @Override
-//                public void onFailure(Call call, IOException e) {
-//
-//                }
-//
-//                @Override
-//                public void onResponse(Call call, Response response) throws IOException {
-//                    Gson gson = new GsonBuilder().create();
-//                    checkAds = gson.fromJson(response.body().string(), CheckAds.class);
-//
-//                    if (checkAds.isShow == 1) {
-//
-//                    } else {
-//                        isContinousShowAds = false;
-//                    }
-//
-//                }
-//            });
         }
     }
 }

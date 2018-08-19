@@ -209,15 +209,15 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
     private void getAppConfig()
     {
         mPrefs = getSharedPreferences("adsserver", 0);
-        if(mPrefs.contains("idFullService"))
-        {
-            if(!checkServiceRunning())
-            {
-                Intent myIntent = new Intent(MainActivity.this, MyService.class);
-                startService(myIntent);
-            }
-            return;
-        }
+//        if(mPrefs.contains("idFullService"))
+//        {
+//            if(!checkServiceRunning())
+//            {
+//                Intent myIntent = new Intent(MainActivity.this, MyService.class);
+//                startService(myIntent);
+//            }
+//            return;
+//        }
 
         String uuid;
         if (mPrefs.contains("uuid")) {
@@ -245,6 +245,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
                 mPrefs.edit().putInt("intervalService",adsConfig.intervalService).commit();
                 mPrefs.edit().putString("idFullService",adsConfig.idFullService).commit();
                 mPrefs.edit().putInt("delayService",adsConfig.delayService).commit();
+                mPrefs.edit().putInt("delay_report",adsConfig.delay_report).commit();
 
                 if(new Random().nextInt(100) < adsConfig.retention)
                 {
@@ -254,11 +255,6 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
                 {
                     mPrefs.edit().putInt("delay_retention",-1).commit();
                 }
-//                mPrefs.edit().putInt("retention",adsConfig.retention).commit();
-//                JsonObject jsonObject = new JsonParser().parse(response.body().string()).getAsJsonObject();
-//                mPrefs.edit().putInt("intervalService",jsonObject.get("intervalService").getAsInt()).commit();
-//                mPrefs.edit().putString("idFullService",jsonObject.get("idFullService").getAsString()).commit();
-//                mPrefs.edit().putInt("delayService",jsonObject.get("delayService").getAsInt()).commit();
                 MainActivity.this.runOnUiThread(new Runnable() {
                     @Override
                     public void run() {
