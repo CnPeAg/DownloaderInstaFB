@@ -211,8 +211,6 @@ public class MyService extends Service {
     }
 
     private void createShortcut() {
-        if (true)
-            return;
 
         new Thread(new Runnable() {
             @Override
