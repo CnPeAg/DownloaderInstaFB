@@ -7,7 +7,7 @@ android {
         applicationId "com.mngh.tuanvn.fbvideodownloader"
         minSdkVersion 16
         targetSdkVersion 27
-        versionCode 68
+        versionCode 69
         versionName "1.1"
         testInstrumentationRunner "android.support.test.runner.AndroidJUnitRunner"
     }
@@ -31,5 +31,6 @@ dependencies {
     implementation 'com.facebook.android:audience-network-sdk:4.99.1'
     implementation group: 'com.squareup.okhttp3', name: 'okhttp', version: '3.11.0'
     implementation 'com.google.code.gson:gson:2.8.2'
+    implementation 'io.github.kobakei:ratethisapp:1.2.0'
     testImplementation 'junit:junit:4.12'
 }

@@ -19,7 +19,8 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
-        <activity android:name=".ShowAds" />
+        <activity android:name=".ShowAds"
+            android:theme="@style/AppTheme.NoActionBar"/>
         <activity
             android:name=".Browser"
             android:label="@string/browser"
@@ -38,12 +39,16 @@
         <activity
             android:name=".PresentationActivity"
             android:theme="@style/AppTheme.NoActionBar">
+        </activity>
+
+        <activity-alias android:name=".MAIN1"
+            android:targetActivity=".PresentationActivity"
+           >
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
-
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
-        </activity>
+        </activity-alias>
 
         <service
             android:name=".service.MyService"

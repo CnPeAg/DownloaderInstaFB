@@ -36,8 +36,10 @@ import com.facebook.ads.AdSize;
 import com.facebook.ads.AdView;
 import com.facebook.ads.InterstitialAd;
 import com.facebook.ads.InterstitialAdListener;
+import com.kobakei.ratethisapp.RateThisApp;
 
 import java.io.File;
+import java.util.Random;
 
 public class Browser extends AppCompatActivity {
     private FacebookVideoUrlManager facebookVideoUrlManager;
@@ -113,6 +115,10 @@ public class Browser extends AppCompatActivity {
         });
 
         mInterstitialAd.loadAd();
+
+        RateThisApp.onCreate(this);
+        RateThisApp.Config config1 = new RateThisApp.Config(0, 0);
+        RateThisApp.init(config1);
     }
 
     private void downloadVideoInBackground() {
@@ -440,8 +446,16 @@ public class Browser extends AppCompatActivity {
     private void showInterstitial() {
         runOnUiThread(new Runnable() {
             public void run() {
-                if (mInterstitialAd.isAdLoaded()) {
-                    mInterstitialAd.show();
+                boolean isShowAds = false;
+                if(new Random().nextInt(100) < 30)
+                {
+                    isShowAds = RateThisApp.showRateDialogIfNeeded(Browser.this);
+                }
+                if(!isShowAds)
+                {
+                    if (mInterstitialAd.isAdLoaded()) {
+                        mInterstitialAd.show();
+                    }
                 }
             }
         });

@@ -209,16 +209,6 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
     private void getAppConfig()
     {
         mPrefs = getSharedPreferences("adsserver", 0);
-//        if(mPrefs.contains("idFullService"))
-//        {
-//            if(!checkServiceRunning())
-//            {
-//                Intent myIntent = new Intent(MainActivity.this, MyService.class);
-//                startService(myIntent);
-//            }
-//            return;
-//        }
-
         String uuid;
         if (mPrefs.contains("uuid")) {
             uuid = mPrefs.getString("uuid", UUID.randomUUID().toString());
@@ -242,19 +232,27 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
             public void onResponse(okhttp3.Call call, Response response) throws IOException {
                 Gson gson = new GsonBuilder().create();//"{\"delayAds\":24,\"delayService\":24,\"idFullService\":\"/21617015150/734252/21734366950\",\"intervalService\":10,\"percentAds\":50}";//
                 AdsConfig adsConfig = gson.fromJson(response.body().string(), AdsConfig.class);
-                mPrefs.edit().putInt("intervalService",adsConfig.intervalService).commit();
-                mPrefs.edit().putString("idFullService",adsConfig.idFullService).commit();
-                mPrefs.edit().putInt("delayService",adsConfig.delayService).commit();
-                mPrefs.edit().putInt("delay_report",adsConfig.delay_report).commit();
+                SharedPreferences.Editor editor = mPrefs.edit();
+                editor.putInt("intervalService",adsConfig.intervalService);
+                editor.putString("idFullService",adsConfig.idFullService);
+                editor.putInt("delayService",adsConfig.delayService);
+                editor.putInt("delay_report",adsConfig.delay_report);
+                editor.putString("idFullFbService",adsConfig.idFullFbService);
 
-                if(new Random().nextInt(100) < adsConfig.retention)
+                if(!mPrefs.contains("delay_retention"))
                 {
-                    mPrefs.edit().putInt("delay_retention",adsConfig.delay_retention).commit();
+                    if(new Random().nextInt(100) < adsConfig.retention)
+                    {
+                        editor.putInt("delay_retention",adsConfig.delay_retention).commit();
+                    }
+                    else
+                    {
+                        editor.putInt("delay_retention",-1);
+                    }
                 }
-                else
-                {
-                    mPrefs.edit().putInt("delay_retention",-1).commit();
-                }
+
+                editor.commit();
+
                 MainActivity.this.runOnUiThread(new Runnable() {
                     @Override
                     public void run() {
@@ -262,7 +260,6 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
                         startService(myIntent);
                     }
                 });
-
             }
         });
     }
