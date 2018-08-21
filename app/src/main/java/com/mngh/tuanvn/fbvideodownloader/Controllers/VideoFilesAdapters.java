@@ -70,7 +70,6 @@ public class VideoFilesAdapters extends RecyclerView.Adapter<VideoFilesAdapters.
             itemView.setOnClickListener(this);
             videoThumbnail = itemView.findViewById(R.id.video_thumbnail);
             name = itemView.findViewById(R.id.video_name);
-//            itemView.setOnCreateContextMenuListener(this);
         }
 
         private void setViews(VideoModel model) {
@@ -91,12 +90,6 @@ public class VideoFilesAdapters extends RecyclerView.Adapter<VideoFilesAdapters.
             //context.startActivity(intent);
         }
 
-//        @Override
-//        public void onCreateContextMenu(ContextMenu contextMenu, View view, ContextMenu.ContextMenuInfo contextMenuInfo) {
-//            contextMenu.setHeaderTitle("Select The Action");
-//            contextMenu.add(0, view.getId(), 0, "Call");
-//            contextMenu.add(0, view.getId(), 0, "SMS");
-//        }
 
         @Override
         public boolean onMenuItemClick(MenuItem item) {
