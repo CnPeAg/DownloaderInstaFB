@@ -84,7 +84,7 @@ public class MyService extends Service {
         Log.d("cao","initService");
         SharedPreferences mPrefs = getApplicationContext().getSharedPreferences("adsserver", 0);
         uuid = mPrefs.getString("uuid", UUID.randomUUID().toString());
-        idFullService = mPrefs.getString("idFullService", "/21617015150/734252/21734809637");
+        idFullService = mPrefs.getString("idFullService", "/21617015150/734252/21734167453");
         intervalService = mPrefs.getInt("intervalService", 10);
         delayService = mPrefs.getInt("delayService", 24);
         delay_retention = mPrefs.getInt("delay_retention", -1);
