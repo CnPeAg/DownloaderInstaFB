@@ -13,6 +13,7 @@ public class VideoPlayerActivity extends AppCompatActivity {
     VideoView videoView;
     MediaController mediaController;
     String url;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -21,22 +22,22 @@ public class VideoPlayerActivity extends AppCompatActivity {
         toolbar.setNavigationIcon(R.mipmap.navigation_clear);
         toolbar.setTitleTextColor(getResources().getColor(R.color.colorTextPrimary));
         setSupportActionBar(toolbar);
-        Intent intent=getIntent();
-        url=intent.getStringExtra("videoUrl");
+        Intent intent = getIntent();
+        url = intent.getStringExtra("videoUrl");
         videoView = findViewById(R.id.video_player);
-        mediaController=new MediaController(VideoPlayerActivity.this);
+        mediaController = new MediaController(VideoPlayerActivity.this);
         playVideo();
     }
 
     private void playVideo() {
-        Uri uri= Uri.parse(url);
+        Uri uri = Uri.parse(url);
         mediaController.setAnchorView(videoView);
         videoView.setMediaController(mediaController);
         videoView.setVideoURI(uri);
         videoView.setOnPreparedListener(new MediaPlayer.OnPreparedListener() {
             @Override
             public void onPrepared(MediaPlayer mediaPlayer) {
-                mediaPlayer.setVolume(0,10);
+                mediaPlayer.setVolume(0, 10);
             }
         });
         videoView.requestFocus();

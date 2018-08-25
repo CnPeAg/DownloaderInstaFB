@@ -19,6 +19,7 @@
         android:roundIcon="@mipmap/ic_launcher"
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
+        <activity android:name=".HowToUseActivity"/>
         <activity android:name=".ShowAds"
             android:theme="@style/AppTheme.NoActionBar"/>
         <activity
@@ -42,8 +43,7 @@
         </activity>
 
         <activity-alias android:name=".MAIN1"
-            android:targetActivity=".PresentationActivity"
-           >
+            android:targetActivity=".PresentationActivity">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
                 <category android:name="android.intent.category.LAUNCHER" />

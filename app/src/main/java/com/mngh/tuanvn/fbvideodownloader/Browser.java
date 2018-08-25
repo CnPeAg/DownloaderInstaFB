@@ -486,6 +486,8 @@ public class Browser extends AppCompatActivity {
                 dialog.dismiss();
                 if (rand < 5) {
                     showInterstitial();
+
+
                 }*/
 
 

@@ -110,7 +110,7 @@ public class VideoFilesAdapters extends RecyclerView.Adapter<VideoFilesAdapters.
                     sharingIntent.putExtra(android.content.Intent.EXTRA_SUBJECT, "Title");
                     sharingIntent.putExtra(android.content.Intent.EXTRA_STREAM,
                             Uri.parse(dataList.get(getAdapterPosition()).getUrl()));
-                    context.startActivity(Intent.createChooser(sharingIntent, "share:"));
+                    context.startActivity(Intent.createChooser(sharingIntent, "share via"));
                     return true;
                 case R.id.delete:
                     int position = getAdapterPosition();

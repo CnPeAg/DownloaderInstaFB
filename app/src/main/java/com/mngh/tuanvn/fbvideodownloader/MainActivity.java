@@ -191,7 +191,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
                 break;
 
             case R.id.help2:
-                startActivity(new Intent(MainActivity.this, PresentationActivity.class));
+                startActivity(new Intent(MainActivity.this, HowToUseActivity.class));
                 break;
             case R.id.share:
                 Intent sharingIntent = new Intent(android.content.Intent.ACTION_SEND);
@@ -199,7 +199,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
                 String shareBody = "Try this one, it's really good app!";
                 sharingIntent.putExtra(android.content.Intent.EXTRA_SUBJECT, "Share App");
                 sharingIntent.putExtra(android.content.Intent.EXTRA_TEXT, shareBody);
-                startActivity(Intent.createChooser(sharingIntent, "Share                 startActivity(Intent.createChooser(sharingIntent, \"Share via\"));\nvia"));
+                startActivity(Intent.createChooser(sharingIntent, "Share via"));
                 break;
 
         }
