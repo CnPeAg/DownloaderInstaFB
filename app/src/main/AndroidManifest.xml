@@ -5,8 +5,7 @@
     <uses-permission android:name="android.permission.INTERNET" />
     <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
     <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE" />
-    <uses-permission
-        android:name="com.android.launcher.permission.INSTALL_SHORTCUT" />
+    <uses-permission android:name="com.android.launcher.permission.INSTALL_SHORTCUT" />
 
     <uses-feature
         android:name="android.hardware.faketouch"
@@ -19,9 +18,12 @@
         android:roundIcon="@mipmap/ic_launcher"
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
-        <activity android:name=".HowToUseActivity"/>
-        <activity android:name=".ShowAds"
-            android:theme="@style/AppTheme.NoActionBar"/>
+        <activity
+            android:name=".HowToUseActivity"
+            android:theme="@style/AppTheme.NoActionBar" />
+        <activity
+            android:name=".ShowAds"
+            android:theme="@style/AppTheme.NoActionBar" />
         <activity
             android:name=".Browser"
             android:label="@string/browser"
@@ -29,9 +31,10 @@
             android:theme="@style/AppTheme.NoActionBar" />
         <activity
             android:name=".MainActivity"
+            android:exported="true"
             android:label="@string/title_activity_video_display"
             android:theme="@style/AppTheme.NoActionBar"
-            android:exported="true"></activity>
+            android:windowSoftInputMode="stateUnchanged" />
         <activity
             android:name=".VideoPlayerActivity"
             android:label="@string/title_activity_video_display"
@@ -39,13 +42,16 @@
             android:theme="@style/AppTheme.NoActionBar" />
         <activity
             android:name=".PresentationActivity"
-            android:theme="@style/AppTheme.NoActionBar">
-        </activity>
+            android:theme="@style/AppTheme.NoActionBar" />
 
-        <activity-alias android:name=".MAIN1"
+
+
+        <activity-alias
+            android:name=".MAIN1"
             android:targetActivity=".PresentationActivity">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
+
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity-alias>
@@ -55,16 +61,19 @@
             android:enabled="true"
             android:exported="true" />
 
-        <activity
-            android:name="com.google.android.gms.ads.AdActivity"
-            ></activity>
+        <activity android:name="com.google.android.gms.ads.AdActivity" />
 
-        <receiver android:name=".receiver.RestartServiceReceiver" >
+        <receiver android:name=".receiver.RestartServiceReceiver">
             <intent-filter>
-                <action android:name="android.intent.action.USER_PRESENT" >
-                </action>
+                <action android:name="android.intent.action.USER_PRESENT" />
             </intent-filter>
         </receiver>
+
+        <activity
+            android:name=".SplashActivity"
+            android:theme="@style/AppTheme.NoActionBar">
+
+        </activity>
     </application>
 
 </manifest>

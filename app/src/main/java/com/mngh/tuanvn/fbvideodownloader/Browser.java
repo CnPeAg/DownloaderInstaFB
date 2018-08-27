@@ -178,15 +178,20 @@ public class Browser extends AppCompatActivity {
                 break;
 
             case R.id.help:
-                startActivity(new Intent(Browser.this, PresentationActivity.class));
+                startActivity(new Intent(Browser.this, HowToUseActivity.class));
                 break;
             case R.id.share:
-                Intent sharingIntent = new Intent(android.content.Intent.ACTION_SEND);
-                sharingIntent.setType("text/plain");
-                String shareBody = "Try this one, it's really good app!";
-                sharingIntent.putExtra(android.content.Intent.EXTRA_SUBJECT, "Share App");
-                sharingIntent.putExtra(android.content.Intent.EXTRA_TEXT, shareBody);
-                startActivity(Intent.createChooser(sharingIntent, "Share via"));
+                try {
+                    Intent i = new Intent(Intent.ACTION_SEND);
+                    i.setType("text/plain");
+                    i.putExtra(Intent.EXTRA_SUBJECT, "My application name");
+                    String sAux = "\nLet me recommend you this application\n\n";
+                    sAux = sAux + "https://play.google.com/store/apps/details?id=com.mngh.tuanvn.fbvideodownloader \n\n";
+                    i.putExtra(Intent.EXTRA_TEXT, sAux);
+                    startActivity(Intent.createChooser(i, "share via:"));
+                } catch(Exception e) {
+                    //e.toString();
+                }
                 break;
         }
         return super.onOptionsItemSelected(item);

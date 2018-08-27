@@ -1,80 +1,40 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<ScrollView
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:orientation="vertical"
-    tools:context="com.mngh.tuanvn.fbvideodownloader.PresentationActivity"
-    android:background="@color/colorTextPrimary">
+    android:fillViewport="true"
+    app:layout_behavior="@string/appbar_scrolling_view_behavior"
+    tools:context=".PresentationActivity">
 
-    <TextView
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_marginBottom="15dp"
-        android:text=" HOW TO USE:"
-        android:textColor="#cc222222"
-        android:textSize="25sp" />
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content">
+                <ImageView
+                    android:layout_width="match_parent"
+                    android:id="@+id/image_howTO"
+                    android:layout_alignParentTop="true"
+                    android:layout_alignParentEnd="true"
+                    android:adjustViewBounds="true"
+                    android:src="@drawable/help"
+                    android:scaleType="fitXY"
+                    android:layout_height="match_parent" />
 
-    <TextView
-        android:id="@+id/textView"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:text="1.Click on LOGIN FACEBOOK or PASTE VIDEO'S LINK."
-        android:layout_margin="5dp"
-        android:padding="5dp"
-        android:textSize="20sp"
-        android:textColor="#cc222222" />
-
-    <TextView
-        android:id="@+id/textView2"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:text="2.Login and browse your wall."
-        android:textSize="20sp"
-        android:textColor="#cc222222"
-        android:layout_margin="5dp"
-        android:padding="5dp"/>
-
-    <TextView
-        android:id="@+id/textView3"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:text="3.Play the video you want to download."
-        android:textSize="20sp"
-        android:textColor="#cc222222"
-        android:layout_margin="5dp"
-        android:padding="5dp"/>
-
-    <TextView
-        android:id="@+id/textView4"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:orientation="horizontal"
-        android:layout_margin="5dp"
-        android:padding="5dp"
-        android:text="@string/download"
-        android:textColor="#cc222222"
-        android:textSize="20sp">
+                <ImageButton
+                    android:layout_width="60dp"
+                    android:id="@+id/start"
+                    android:src="@drawable/btn_gotit"
+                    android:scaleType="fitStart"
+                    android:background="@null"
+                    android:layout_marginEnd="5dp"
+                    android:layout_marginTop="10dp"
+                    android:adjustViewBounds="true"
+                    android:layout_alignParentTop="true"
+                    android:layout_alignParentEnd="true"
+                    android:layout_height="wrap_content" />
+        </RelativeLayout>
 
 
-    </TextView>
-<RelativeLayout
-    android:layout_width="match_parent"
-    android:layout_height="wrap_content"
-    android:layout_marginTop="80dp"
-    android:gravity="center">
-    <Button
-        android:id="@+id/start"
-        android:layout_width="200dp"
-        android:layout_height="wrap_content"
-        android:layout_margin="5dp"
-        android:background="@color/colorPrimary"
-        android:gravity="center"
-        android:padding="5dp"
-        android:text="GOT IT!"
-        android:textColor="#FFFFFF" />
-</RelativeLayout>
-
-
-
-</LinearLayout>
+</ScrollView>

@@ -5,20 +5,15 @@ import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.view.View;
 import android.widget.Button;
+import android.widget.ImageButton;
+import android.widget.ImageView;
 
 public class PresentationActivity extends AppCompatActivity {
-    Button start;
+    ImageButton start;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-
-//        SharedPreferences mPref = getSharedPreferences("adsserver", Activity.MODE_PRIVATE);
-//        if(mPref.contains("shortcut"))
-//        {
-//            mPref.edit().remove("shortcut").commit();
-//        }
-
         setContentView(R.layout.activity_presentation);
         start = findViewById(R.id.start);
         start.setOnClickListener(new View.OnClickListener() {
@@ -29,5 +24,8 @@ public class PresentationActivity extends AppCompatActivity {
                 finish();
             }
         });
+
+        ImageView imageView = findViewById(R.id.image_howTO);
+//        imageView.setNestedScrollingEnabled(fa);
     }
 }

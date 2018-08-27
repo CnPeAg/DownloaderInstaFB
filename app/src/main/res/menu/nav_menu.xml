@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android">
+
+    <group android:checkableBehavior="none">
+        <item
+            android:id="@+id/howTo"
+            android:icon="@drawable/ic_howtouse"
+            android:title="How to use ?"/>
+        <item
+            android:id="@+id/shareApp"
+            android:icon="@drawable/share_50"
+            android:title="Share app"/>
+
+        <item
+            android:id="@+id/moreApp"
+            android:icon="@drawable/ic_moreapps"
+            android:title="More apps"/>
+    </group>
+
+</menu>

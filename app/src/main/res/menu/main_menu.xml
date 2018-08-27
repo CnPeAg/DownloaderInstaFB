@@ -3,27 +3,18 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     tools:context="com.mngh.tuanvn.fbvideodownloader.MainActivity">
+
     <item
-        android:id="@+id/help2"
+        android:id="@+id/removeAds"
         android:orderInCategory="100"
-        android:title="Help"
-        app:showAsAction="never" />
-    <item
-        android:id="@+id/more_apps"
-        android:orderInCategory="100"
-        android:title="More Apps"
-        app:showAsAction="never" />
-    <item
-        android:id="@+id/reload"
-        android:orderInCategory="100"
-        android:icon="@mipmap/recycle_icon"
-        android:title="Refresh"
+        android:icon="@drawable/ic_removead"
+        android:title="removeAds"
         app:showAsAction="always"/>
     <item
-        android:id="@+id/share"
+        android:id="@+id/goToFB"
         android:orderInCategory="100"
-        android:icon="@mipmap/sharing"
-        android:title="Share"
+        android:icon="@drawable/ic_fb"
+        android:title="goToFB"
         app:showAsAction="always"/>
 
 

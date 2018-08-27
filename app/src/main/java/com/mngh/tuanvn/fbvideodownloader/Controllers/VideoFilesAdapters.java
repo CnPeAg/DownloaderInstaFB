@@ -7,25 +7,23 @@ import android.content.Intent;
 import android.net.Uri;
 import android.provider.MediaStore;
 import android.support.annotation.NonNull;
-import android.support.v7.widget.PopupMenu;
 import android.support.v7.widget.RecyclerView;
-import android.util.Log;
-import android.view.ContextMenu;
 import android.view.LayoutInflater;
-import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Button;
+import android.widget.ImageButton;
 import android.widget.ImageView;
-import android.widget.TextView;
 
 import com.mngh.tuanvn.fbvideodownloader.Model.VideoModel;
 import com.mngh.tuanvn.fbvideodownloader.R;
 import com.mngh.tuanvn.fbvideodownloader.VideoPlayerActivity;
 
+import java.io.File;
 import java.util.ArrayList;
 
 /**
- * Created by KAMAL OLI on 12/08/2017.
+ * Created by tuancon on 12/08/2017.
  */
 
 public class VideoFilesAdapters extends RecyclerView.Adapter<VideoFilesAdapters.GridViewHolder> {
@@ -59,60 +57,29 @@ public class VideoFilesAdapters extends RecyclerView.Adapter<VideoFilesAdapters.
         return dataList.size();
     }
 
-    class GridViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener,
-             PopupMenu.OnMenuItemClickListener {//View.OnCreateContextMenuListener,
-        PopupMenu popupMenu;
+    class GridViewHolder extends RecyclerView.ViewHolder {
+
         ImageView videoThumbnail;
-        TextView name;
+        ImageButton btnPlay, btnShare, btnDelete;
 
         private GridViewHolder(View itemView) {
             super(itemView);
-            itemView.setOnClickListener(this);
             videoThumbnail = itemView.findViewById(R.id.video_thumbnail);
-            name = itemView.findViewById(R.id.video_name);
-        }
-
-        private void setViews(VideoModel model) {
-            videoThumbnail.setImageBitmap(model.getImageBitmap());
-            name.setText(model.getName());
-        }
-
-        @Override
-        public void onClick(View view) {
-            popupMenu = new PopupMenu(context, view);
-            popupMenu.setOnMenuItemClickListener(this);
-            popupMenu.inflate(R.menu.video_context_menu);
-            popupMenu.show();
-
-            Log.e("ViewId", view.getId() + "");
-            VideoModel model = dataList.get(getAdapterPosition());
-            Log.e("ArrayList index", model.getName());
-            //context.startActivity(intent);
-        }
-
-
-        @Override
-        public boolean onMenuItemClick(MenuItem item) {
-            switch (item.getItemId()) {
-                case R.id.play:
-                    Intent intent = new Intent(context, VideoPlayerActivity.class);
-                    intent.putExtra("videoUrl", dataList.get(getAdapterPosition()).getUrl());
-                    context.startActivity(intent);
-                    return true;
-                default:
-                    return false;
-                case R.id.cancel:
-                    popupMenu.dismiss();
-                    return true;
-                case R.id.share:
-                    Intent sharingIntent = new Intent(android.content.Intent.ACTION_SEND);
-                    sharingIntent.setType("video/*");
-                    sharingIntent.putExtra(android.content.Intent.EXTRA_SUBJECT, "Title");
-                    sharingIntent.putExtra(android.content.Intent.EXTRA_STREAM,
-                            Uri.parse(dataList.get(getAdapterPosition()).getUrl()));
-                    context.startActivity(Intent.createChooser(sharingIntent, "share via"));
-                    return true;
-                case R.id.delete:
+            btnPlay = itemView.findViewById(R.id.btnPlay);
+            btnPlay.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View view) {
+                   try{
+                       Intent intent = new Intent(context, VideoPlayerActivity.class);
+                       intent.putExtra("videoUrl", dataList.get(getAdapterPosition()).getUrl());
+                       context.startActivity(intent);
+                   }catch (Exception e){}
+                }
+            });
+            btnDelete = itemView.findViewById(R.id.btnDelete);
+            btnDelete.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View view) {
                     int position = getAdapterPosition();
                     Uri uri = ContentUris.withAppendedId(MediaStore.Video.Media.EXTERNAL_CONTENT_URI, dataList.
                             get(position).getId());
@@ -120,13 +87,27 @@ public class VideoFilesAdapters extends RecyclerView.Adapter<VideoFilesAdapters.
                     resolver.delete(uri, null, null);
                     dataList.remove(position);
                     notifyItemRemoved(position);
-                    return true;
-//                case R.id.convert:
-//                    Intent i = new Intent(Intent.ACTION_VIEW, Uri.parse(dataList.get(getAdapterPosition()).getUrl()));
-//                    i.setDataAndType(Uri.parse(dataList.get(getAdapterPosition()).getUrl()), "video/*");
-//                    context.startActivity(i);
-//                    return true;
-            }
+                }
+            });
+            btnShare = itemView.findViewById(R.id.btnShare);
+            btnShare.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View view) {
+                   try {
+                       Intent sendIntent = new Intent(Intent.ACTION_SEND);
+                       sendIntent.setType("video/3gp");
+                       File file = new File(dataList.get(getAdapterPosition()).getUrl());
+                       sendIntent.putExtra(Intent.EXTRA_SUBJECT, "Video");
+                       sendIntent.putExtra(Intent.EXTRA_STREAM, Uri.fromFile(file));
+                       sendIntent.putExtra(Intent.EXTRA_TEXT, "Enjoy the Video");
+                       context.startActivity(Intent.createChooser(sendIntent, "Share via:"));
+                   }catch (Exception e){}
+                }
+            });
+        }
+
+        private void setViews(VideoModel model) {
+            videoThumbnail.setImageBitmap(model.getImageBitmap());
         }
     }
 }
