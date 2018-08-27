@@ -95,7 +95,7 @@ public class VideoFilesAdapters extends RecyclerView.Adapter<VideoFilesAdapters.
                 public void onClick(View view) {
                    try {
                        Intent sendIntent = new Intent(Intent.ACTION_SEND);
-                       sendIntent.setType("video/3gp");
+                       sendIntent.setType("video/*");
                        File file = new File(dataList.get(getAdapterPosition()).getUrl());
                        sendIntent.putExtra(Intent.EXTRA_SUBJECT, "Video");
                        sendIntent.putExtra(Intent.EXTRA_STREAM, Uri.fromFile(file));
