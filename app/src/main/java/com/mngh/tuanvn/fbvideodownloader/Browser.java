@@ -419,26 +419,9 @@ public class Browser extends AppCompatActivity {
     }
 
     private void exitConfirmationDialgo() {
-        AlertDialog.Builder builder = new AlertDialog.Builder(Browser.this);
-        builder.setMessage("Do you want to exit ?");
-        builder.setPositiveButton("Yes", new DialogInterface.OnClickListener() {
-            @Override
-            public void onClick(DialogInterface dialogInterface, int i) {
-                dialogInterface.dismiss();
-                android.os.Process.killProcess(android.os.Process.myPid());
-                System.exit(1);
-
-            }
-        });
-        builder.setNegativeButton("No", new DialogInterface.OnClickListener() {
-            @Override
-            public void onClick(DialogInterface dialogInterface, int i) {
-                dialogInterface.dismiss();
-            }
-        });
-        builder.setCancelable(false);
-        builder.create();
-        builder.show();
+       Intent intent = new Intent(Browser.this, MainActivity.class);
+       startActivity(intent);
+       finish();
     }
 
     @Override
@@ -485,15 +468,6 @@ public class Browser extends AppCompatActivity {
                 downloadVideoInBackground();
                 dialog.dismiss();
                 showInterstitial();
-                /*Random r = new Random();
-                int rand = r.nextInt(10);
-
-                dialog.dismiss();
-                if (rand < 5) {
-                    showInterstitial();
-
-
-                }*/
 
 
             }
@@ -519,18 +493,6 @@ public class Browser extends AppCompatActivity {
         // Setting Netural "Cancel" Button
         alertDialog.setNeutralButton("CANCEL", new DialogInterface.OnClickListener() {
             public void onClick(DialogInterface dialog, int which) {
-                // User pressed Cancel button. Write Logic Here
-               /* String finalurl ;
-                finalurl=pathvideo;
-                finalurl=finalurl.replaceAll("%3A",":");
-                finalurl=finalurl.replaceAll("%2F","/");
-                finalurl=finalurl.replaceAll("%3F","?");
-                finalurl=finalurl.replaceAll("%3D","=");
-                finalurl=finalurl.replaceAll("%26","&");
-                ClipboardManager clipboard = (ClipboardManager)getApplicationContext().getSystemService(Context.CLIPBOARD_SERVICE);
-                ClipData clip = ClipData.newPlainText("mainurlcopy",finalurl);
-                clipboard.setPrimaryClip(clip);
-                Toast.makeText(getApplicationContext(),"Url Copied",Toast.LENGTH_SHORT).show();*/
                 dialog.dismiss();
             }
         });

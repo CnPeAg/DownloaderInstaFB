@@ -1,15 +1,13 @@
 package com.mngh.tuanvn.fbvideodownloader;
 
 import android.Manifest;
-import android.app.ActivityManager;
-import android.content.ComponentName;
-import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.content.pm.PackageManager;
 import android.net.Uri;
 import android.os.Build;
 import android.os.Bundle;
+import android.os.Handler;
 import android.support.annotation.NonNull;
 import android.support.design.widget.NavigationView;
 import android.support.v4.content.ContextCompat;
@@ -60,6 +58,7 @@ public class MainActivity extends AppCompatActivity implements
     private RecyclerView recyclerView;
     private GetDataForAdapter dataForAdapter;
     private VideoFilesAdapters adapters;
+    private boolean doubleBackToExitPressedOnce = false;
     Button loginOrCheck;
     EditText editText;
     DrawerLayout androidDrawerLayout;
@@ -162,6 +161,24 @@ public class MainActivity extends AppCompatActivity implements
             Toast.makeText(this, "You have not installed Instagram", Toast.LENGTH_LONG).show();
         }
 
+    }
+
+    @Override
+    public void onBackPressed() {
+        if (doubleBackToExitPressedOnce) {
+            super.onBackPressed();
+            return ;
+        }
+        doubleBackToExitPressedOnce = true;
+        Toast.makeText(this, "Please click BACK again to exit", Toast.LENGTH_SHORT).show();
+
+        new Handler().postDelayed(new Runnable() {
+
+            @Override
+            public void run() {
+                doubleBackToExitPressedOnce = false;
+            }
+        }, 2000);
     }
 
     @Override
