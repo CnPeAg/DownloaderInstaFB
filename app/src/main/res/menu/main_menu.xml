@@ -4,12 +4,12 @@
     xmlns:tools="http://schemas.android.com/tools"
     tools:context="com.mngh.tuanvn.fbvideodownloader.MainActivity">
 
-    <item
+   <!-- <item
         android:id="@+id/removeAds"
         android:orderInCategory="100"
         android:icon="@drawable/ic_removead"
         android:title="removeAds"
-        app:showAsAction="always"/>
+        app:showAsAction="always"/>-->
     <item
         android:id="@+id/goToFB"
         android:orderInCategory="100"

@@ -304,9 +304,9 @@ public class MainActivity extends AppCompatActivity implements
             case android.R.id.home:
                 androidDrawerLayout.openDrawer(GravityCompat.START);
                 return true;
-            case R.id.removeAds:
-
-                return true;
+//            case R.id.removeAds:
+//
+//                return true;
             case R.id.goToFB:
                 callFacebook();
                 return true;
