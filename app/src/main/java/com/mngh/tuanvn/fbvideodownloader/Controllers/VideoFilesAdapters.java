@@ -1,8 +1,10 @@
 package com.mngh.tuanvn.fbvideodownloader.Controllers;
 
+import android.app.AlertDialog;
 import android.content.ContentResolver;
 import android.content.ContentUris;
 import android.content.Context;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.net.Uri;
 import android.provider.MediaStore;
@@ -73,20 +75,38 @@ public class VideoFilesAdapters extends RecyclerView.Adapter<VideoFilesAdapters.
                        Intent intent = new Intent(context, VideoPlayerActivity.class);
                        intent.putExtra("videoUrl", dataList.get(getAdapterPosition()).getUrl());
                        context.startActivity(intent);
-                   }catch (Exception e){}
+                   }catch (Exception e){ e.printStackTrace();}
                 }
             });
             btnDelete = itemView.findViewById(R.id.btnDelete);
             btnDelete.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View view) {
-                    int position = getAdapterPosition();
-                    Uri uri = ContentUris.withAppendedId(MediaStore.Video.Media.EXTERNAL_CONTENT_URI, dataList.
-                            get(position).getId());
-                    ContentResolver resolver = context.getContentResolver();
-                    resolver.delete(uri, null, null);
-                    dataList.remove(position);
-                    notifyItemRemoved(position);
+                    AlertDialog.Builder aBuilder = new AlertDialog.Builder(view.getContext());
+                    aBuilder.setTitle("Are you sure you want to delete this file ?");
+//                    aBuilder.setMessage("Are you sure you want to delete this file ?");
+                    aBuilder.setPositiveButton("OK", new DialogInterface.OnClickListener() {
+                        @Override
+                        public void onClick(DialogInterface dialogInterface, int i) {
+                            int position = getAdapterPosition();
+                            Uri uri = ContentUris.withAppendedId(MediaStore.Video.Media.EXTERNAL_CONTENT_URI, dataList.
+                                    get(position).getId());
+                            ContentResolver resolver = context.getContentResolver();
+
+                            resolver.delete(uri, null, null);
+                            dataList.remove(position);
+                            notifyItemRemoved(position);
+                        }
+                    });
+
+                    aBuilder.setNegativeButton("CANCEL", new DialogInterface.OnClickListener() {
+                        @Override
+                        public void onClick(DialogInterface dialogInterface, int i) {
+                            dialogInterface.dismiss();
+                        }
+                    });
+
+                    aBuilder.show();
                 }
             });
             btnShare = itemView.findViewById(R.id.btnShare);
@@ -101,7 +121,7 @@ public class VideoFilesAdapters extends RecyclerView.Adapter<VideoFilesAdapters.
                        sendIntent.putExtra(Intent.EXTRA_STREAM, Uri.fromFile(file));
                        sendIntent.putExtra(Intent.EXTRA_TEXT, "Enjoy the Video");
                        context.startActivity(Intent.createChooser(sendIntent, "Share via:"));
-                   }catch (Exception e){}
+                   }catch (Exception e){e.printStackTrace();}
                 }
             });
         }

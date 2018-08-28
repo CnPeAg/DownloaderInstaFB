@@ -158,7 +158,7 @@ public class MainActivity extends AppCompatActivity implements
             Intent i = getPackageManager().getLaunchIntentForPackage(apppackage);
             startActivity(i);
         } catch (Exception e) {
-            Toast.makeText(this, "You have not installed Instagram", Toast.LENGTH_LONG).show();
+            Toast.makeText(this, "You have not installed Facebook", Toast.LENGTH_LONG).show();
         }
 
     }
@@ -251,45 +251,6 @@ public class MainActivity extends AppCompatActivity implements
         }
     }
 
-  /*  @Override
-    public void onClick(View view) {
-        switch (view.getId()) {
-            case R.id.login_fb:
-                Intent intent = new Intent(MainActivity.this, Browser.class);
-                startActivity(intent);
-                break;
-            case R.id.url_video:
-                final AlertDialog.Builder builder = new AlertDialog.Builder(MainActivity.this);
-                final EditText edittext = new EditText(MainActivity.this);
-                builder.setMessage("Paste your public facebook video's link here !");
-                builder.setView(edittext);
-                builder.setPositiveButton("OK", new DialogInterface.OnClickListener() {
-                    @Override
-                    public void onClick(DialogInterface dialogInterface, int i) {
-                        String url = edittext.getText().toString();
-
-                        if (!url.equalsIgnoreCase("") && Patterns.WEB_URL.matcher(url).matches()) {
-                            Intent intent = new Intent(MainActivity.this, Browser.class);
-                            intent.putExtra("link", url);
-                            startActivity(intent);
-                            dialogInterface.dismiss();
-                        } else
-                            Toast.makeText(MainActivity.this, "Your link is invalid!", Toast.LENGTH_SHORT).show();
-                    }
-                });
-                builder.setNegativeButton("CANCEL", new DialogInterface.OnClickListener() {
-                    @Override
-                    public void onClick(DialogInterface dialogInterface, int i) {
-
-                        dialogInterface.dismiss();
-                    }
-                });
-                builder.setCancelable(false);
-                builder.create();
-                builder.show();
-                break;
-        }
-    }*/
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
