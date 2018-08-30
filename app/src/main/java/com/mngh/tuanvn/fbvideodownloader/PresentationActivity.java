@@ -24,5 +24,8 @@ public class PresentationActivity extends AppCompatActivity {
                 finish();
             }
         });
+
+//        ImageView imageView = findViewById(R.id.image_howTO);
+//        imageView.setNestedScrollingEnabled(fa);
     }
 }

@@ -46,19 +46,30 @@ public class ShowAds extends AppCompatActivity {
     @Override
     public void onResume(){
         super.onResume();
-        // put your code here...
         countResume++;
-        if(countResume >= 2)
-        {
-            try {
+        Log.d("cao","resume="+countResume);
+
+        try {
+            if(countResume >= 2)
+            {
                 if (Build.VERSION.SDK_INT < 21) {
                     finishAffinity();
                 } else {
                     finishAndRemoveTask();
                 }
-            } catch (Exception e) {
-                e.printStackTrace();
             }
+
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+    }
+
+    @Override
+    protected void onDestroy() {
+        super.onDestroy();
+        if ( dialogLoading!=null)
+        {
+            dialogLoading.cancel();
         }
     }
 

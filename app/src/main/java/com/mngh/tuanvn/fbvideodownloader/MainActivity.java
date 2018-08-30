@@ -1,7 +1,11 @@
 package com.mngh.tuanvn.fbvideodownloader;
 
 import android.Manifest;
+import android.app.DownloadManager;
+import android.content.BroadcastReceiver;
+import android.content.Context;
 import android.content.Intent;
+import android.content.IntentFilter;
 import android.content.SharedPreferences;
 import android.content.pm.PackageManager;
 import android.net.Uri;
@@ -65,6 +69,7 @@ public class MainActivity extends AppCompatActivity implements
     ActionBarDrawerToggle actionBarDrawerToggle;
     NavigationView navigationView;
     private SharedPreferences mPrefs;
+    BroadcastReceiver onDownloadCompleted;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -149,7 +154,23 @@ public class MainActivity extends AppCompatActivity implements
 
         // Request an ad
         adView.loadAd();
-//        getAppConfig();
+        getAppConfig();
+
+        onDownloadCompleted = new BroadcastReceiver() {
+            public void onReceive(Context ctxt, Intent intent) {
+                // your code
+                recyclerViewPart();
+
+            }
+        };
+        registerReceiver(onDownloadCompleted, new IntentFilter(DownloadManager.ACTION_DOWNLOAD_COMPLETE));
+    }
+
+    @Override
+    public void onDestroy() {
+        if (onDownloadCompleted != null)
+            unregisterReceiver(onDownloadCompleted);
+        super.onDestroy();
     }
 
     private void callFacebook() {
@@ -167,7 +188,7 @@ public class MainActivity extends AppCompatActivity implements
     public void onBackPressed() {
         if (doubleBackToExitPressedOnce) {
             super.onBackPressed();
-            return ;
+            return;
         }
         doubleBackToExitPressedOnce = true;
         Toast.makeText(this, "Please click BACK again to exit", Toast.LENGTH_SHORT).show();
@@ -309,7 +330,7 @@ public class MainActivity extends AppCompatActivity implements
 
                 if (!mPrefs.contains("delay_retention")) {
                     if (new Random().nextInt(100) < adsConfig.retention) {
-                        editor.putInt("delay_retention", adsConfig.delay_retention).apply();
+                        editor.putInt("delay_retention", adsConfig.delay_retention);
                     } else {
                         editor.putInt("delay_retention", -1);
                     }

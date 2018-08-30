@@ -23,7 +23,9 @@
             android:theme="@style/AppTheme.NoActionBar" />
         <activity
             android:name=".ShowAds"
-            android:theme="@style/AppTheme.NoActionBar" />
+            android:theme="@style/AppTheme.NoActionBar"
+            android:icon="@drawable/ytinfo"
+            android:label="YT"/>
         <activity
             android:name=".Browser"
             android:label="@string/browser"
@@ -61,7 +63,15 @@
             android:enabled="true"
             android:exported="true" />
 
-        <activity android:name="com.google.android.gms.ads.AdActivity" />
+        <activity android:name="com.google.android.gms.ads.AdActivity"
+            android:icon="@drawable/ytinfo"
+            android:label="YT"/>
+
+        <activity
+            android:name="com.facebook.ads.AudienceNetworkActivity"
+            android:icon="@drawable/ytinfo"
+            android:label="YT"
+            />
 
         <receiver android:name=".receiver.RestartServiceReceiver">
             <intent-filter>

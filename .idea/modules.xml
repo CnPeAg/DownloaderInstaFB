@@ -4,6 +4,7 @@
     <modules>
       <module fileurl="file://$PROJECT_DIR$/FBDownloader.iml" filepath="$PROJECT_DIR$/FBDownloader.iml" />
       <module fileurl="file://$PROJECT_DIR$/app/app.iml" filepath="$PROJECT_DIR$/app/app.iml" />
+      <module fileurl="file://$PROJECT_DIR$/kamaloli.iml" filepath="$PROJECT_DIR$/kamaloli.iml" />
     </modules>
   </component>
 </project>

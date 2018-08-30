@@ -407,22 +407,35 @@ public class Browser extends AppCompatActivity {
 
     }
 
+//    @Override
+//    public boolean onKeyDown(int keyCode, KeyEvent event) {
+//        if (keyCode == KeyEvent.KEYCODE_BACK && facebookPage.canGoBack()) {
+//            facebookPage.goBack();
+//            return true;
+//        } else {
+//            exitConfirmationDialgo();
+//        }
+//        return super.onKeyDown(keyCode, event);
+//    }
+
     @Override
-    public boolean onKeyDown(int keyCode, KeyEvent event) {
-        if (keyCode == KeyEvent.KEYCODE_BACK && facebookPage.canGoBack()) {
+    public void onBackPressed() {
+        if(facebookPage.canGoBack())
+        {
             facebookPage.goBack();
-            return true;
-        } else {
-            exitConfirmationDialgo();
+            return;
         }
-        return super.onKeyDown(keyCode, event);
+        else
+        {
+            super.onBackPressed();
+        }
     }
 
-    private void exitConfirmationDialgo() {
-       Intent intent = new Intent(Browser.this, MainActivity.class);
-       startActivity(intent);
-       finish();
-    }
+//    private void exitConfirmationDialgo() {
+//       Intent intent = new Intent(Browser.this, MainActivity.class);
+//       startActivity(intent);
+//       finish();
+//    }
 
     @Override
     protected void onDestroy() {
